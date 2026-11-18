@@ -1,5 +1,11 @@
 # Rename and deploy OmicsAtlas-AI
 
+The initial migration is complete as of 2026-11-18. The live site is
+**https://pf-f.github.io/OmicsAtlas-AI/** and the repository is
+**https://github.com/pf-f/OmicsAtlas-AI**. Both the first publication and a real
+manual collection/republish succeeded. For normal operations, use sections 5
+and Recover or retry; section 3 documents the already completed rename.
+
 Local implementation can be previewed without GitHub access. Repository rename,
 push and remote workflow verification need write/admin access to `pf-f`'s repository.
 No deployment credential is stored in this project, and no paid service is needed.

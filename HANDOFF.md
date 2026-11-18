@@ -10,21 +10,30 @@ Web is the target. The user authorized implementation and redeployment.
 
 ## Current state
 
-Local implementation and checks are complete. On 2026-11-18 the user authenticated
-GitHub CLI as `pf-f`; repository administration/write and workflow scopes were
-verified. Repository **pf-f/OmicsAtlas-AI** has been renamed successfully, keeping
-its original repository ID and history. Pages is being switched to explicit
-GitHub Actions publishing. Source commit, production deployment and a real manual
-refresh are in progress; do not claim them complete until verified.
+Implementation, remote rename, source push and live deployment are complete.
+On 2026-11-18 GitHub CLI authentication as `pf-f` and repository administration/
+workflow permissions were verified. The repository was renamed in place,
+preserving repository ID `1178441962` and all history. Pages uses explicit
+Actions publishing and retains the existing `main`-only environment policy.
 
-- Working branch: `main`, based on `7a4b6fd`, pending the initial upgrade commit.
+- Repository: https://github.com/pf-f/OmicsAtlas-AI
+- Live site: https://pf-f.github.io/OmicsAtlas-AI/
+- Implementation commit: `1faee16e08ba67013cb820604135065ef270f7af`.
+- Initial publish: [44216669791](https://github.com/pf-f/OmicsAtlas-AI/actions/runs/44216669791), successful.
+- Real collection and republish: [44216859060](https://github.com/pf-f/OmicsAtlas-AI/actions/runs/44216859060), successful.
+- Automatic data commit: `644e9af324989e85e5db584102ffad1b8d16e9df`;
+  changed exactly `data/state.json`, `data/runs.json`, `docs/data/catalog.json`.
+- Working branch: `main`, synchronized with origin before this delivery record.
 - Local preview server: `http://127.0.0.1:8000`, serving `docs/` (started for this task).
-- Current real catalog: **214 accepted tools**, 11 domains; 319 unique repositories
-  checked, 65 awaiting review, 1,649 candidates pending. Counts are a snapshot,
+- Current real catalog: **221 accepted tools**, 11 domains; 328 unique repositories
+  checked, 67 awaiting review, 3,646 candidates pending. Counts are a snapshot,
   not a promise of exhaustive GitHub coverage.
-- Source metadata/READMEs were retrieved during this task. The final initial
-  source recheck reused that retrieved content and retained original star
-  observation dates; it did not fabricate a new star sample.
+- The real Actions refresh on 2026-11-18 used 380 HTTP requests, completed 22
+  discovery queries, refreshed all 214 existing entries, and checked 99 evidence
+  inputs. There were no read errors. All earlier star samples were preserved;
+  298 records now have multiple observations. No repository yet has a 6–8 day
+  baseline, so weekly growth remains null. Pending candidates reflect the
+  configured sampling/enrichment budget, not collection failure.
 - Product and repository name: OmicsAtlas-AI. Origin now points to
   `https://github.com/pf-f/OmicsAtlas-AI.git`.
 - The local user-supplied `.agents/` directory was preserved and excluded from Git.
@@ -90,13 +99,13 @@ item, because hidden dialog controls must not capture the restored focus.
   HTTP failure/retry/304/auth handling, pagination and state preservation.
 - `python scripts/evaluate.py`: 66 frozen real repository snapshots. Development
   group: 22/22 relevant tools accepted and 22/22 known irrelevant/resource entries
-  excluded. Additional group: 17/22 accepted, five correctly retained as uncertain
-  rather than forced into the directory. Their expected admission is still a
+  excluded. Additional group: 17/22 accepted; five remain uncertain rather than
+  being forced into the directory. Their expected admission is still a
   miss: SpaGCN, OpenFold, BCFtools, Flye and Crux. This is a small selected sample,
   not population accuracy. Strict domain-label metrics are reported separately
   by the evaluator; broad multi-domain tags still need ongoing curation.
-- `python scripts/update_catalog.py --validate`: 214 unique tools; canonical state
-  and public snapshot match.
+- `python scripts/update_catalog.py --validate`: 221 unique tools after the real
+  refresh; canonical state and public snapshot match.
 - `python tests/browser_check.py`: all 10 flow groups passed using the actual
   catalog under `/OmicsAtlas-AI/`. Search, URL/back restoration, pagination,
   bookmark persistence/import/export, four-way comparison, source detail,
@@ -107,7 +116,9 @@ item, because hidden dialog controls must not capture the restored focus.
   pixels, DPR 1→2, CSS zoom remained unset. Reflow, search, details, Escape and
   focus return passed. Separate CSS zoom checks also passed.
 - `ruff check scripts tests --select F`: passed. New Python/JS/CSS were formatted.
-- Both workflow YAML files parse. Official action tags were checked to exist:
+- Both workflows parse; the production workflow ran successfully twice on
+  GitHub-hosted Python 3.12, including backend, classification, browser and native
+  zoom checks before publication. Official action tags were checked to exist:
   checkout@v7, setup-python@v7, upload-pages-artifact@v4, deploy-pages@v4.
 - `git diff --check`: passed before final handoff update.
 
@@ -117,20 +128,28 @@ Browser evidence/logs are local in ignored `.artifacts/`: `directory-en.png`,
 `backend-tests.log` and `classification-evaluation.json`. These are internal
 execution evidence, not a claim of final user experience acceptance.
 
-## Deployment and next action
+## Deployment and operations
 
-Follow [DEPLOYMENT.md](DEPLOYMENT.md) for repeatable operations. GitHub login and
-repository rename are complete. Existing production environment permits `main`
-only and requires no reviewer approval; preserve that rule. Publish the reviewed
-source, verify Actions and Pages, then run a manual collection and inspect the
-resulting data commit and deployment. No additional user approval is needed.
+Deployment is complete; no user action or additional credential is required.
+Follow [DEPLOYMENT.md](DEPLOYMENT.md) for subsequent manual refreshes, deploy-only
+runs and recovery. Repository visibility remains public. Only `main` may deploy.
+The repository homepage now links to the live Pages site.
 
-Target URL: **https://pf-f.github.io/OmicsAtlas-AI/**. GitHub does not automatically
-redirect the old Pages project address. Keep repository history and avoid
-recreating an unrelated repository under the old name.
+Both the initial publish and the real refresh completed their build/deploy jobs.
+The live site returned HTTP 200, displayed the new brand, and its catalog exactly
+matched the data commit (SHA-256
+`5727f8031a765971ef156710f3da8b6ad3adb7c2738c142b873cfedc75d12d44`).
+A browser on the actual public URL verified full-library search, linked evidence,
+bookmark persistence, tool comparison, a real JSON download, Chinese switching
+and Chinese search. No page errors or failing site requests were observed.
+Screenshots: `.artifacts/live-directory-en.png`, `live-directory-zh.png`,
+`live-comparison.png`; temporary test script: `.cache/live_check.py`.
 
-The workflow explicitly commits state/catalog before artifact upload/deploy,
-serializes production runs, and keeps Sunday 00:23 UTC / 08:23 China time updates.
-Remote permissions and branch/environment policy have been verified. Real Actions
-execution and live URL checks are pending the source push. The next
-scheduled run (2026-11-22) can only be confirmed after it actually occurs.
+The active workflow keeps **Sunday 00:23 UTC / 08:23 China time** updates. This
+exact collection→validation→data commit→artifact→deployment path has been tested
+by manual dispatch. The next scheduled execution (2026-11-22) can only be confirmed
+after it actually occurs; do not claim a future cron event has already run.
+
+The website is https://pf-f.github.io/OmicsAtlas-AI/ . GitHub redirects old
+repository links, but does not automatically redirect the old Pages project URL.
+The local clone directory keeps its existing name to preserve workspace paths.
