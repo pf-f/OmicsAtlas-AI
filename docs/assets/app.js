@@ -1,4 +1,4 @@
-import { translator } from "./i18n.js";
+import { translator } from "./i18n.js?v=2";
 import {
   PAGE_SIZE,
   defaultState,
@@ -12,6 +12,8 @@ import {
 } from "./logic.js";
 const $ = (id) => document.getElementById(id);
 const STORE = "omicsatlas.saved.v1";
+const OPEN_POPOVER = ":is(.more-filters, .export-menu, .growth-help)[open]";
+const search = $("search");
 let lang =
   new URLSearchParams(location.search).get("lang") === "zh" ? "zh" : "en";
 try {
@@ -25,7 +27,8 @@ let t = translator(lang),
   saved = new Map(),
   compare = new Set(),
   toastTimer,
-  searchTimer,
+  searchTimer = null,
+  searchComposing = false,
   detailRepo = null;
 try {
   const raw = localStorage.getItem(STORE);
@@ -35,6 +38,7 @@ const icons = {
   save: '<path d="M5 3h10v15l-5-3-5 3z"/>',
   plus: '<path d="M4 10h12M10 4v12"/>',
   check: '<path d="m4 10 4 4 8-8"/>',
+  star: '<path d="m10 2.5 2.3 4.7 5.2.8-3.8 3.7.9 5.2-4.6-2.4-4.6 2.4.9-5.2L2.5 8l5.2-.8z"/>',
 };
 function icon(name) {
   const s = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -75,6 +79,23 @@ function nameFor(items, id) {
 }
 function labels(items, ids) {
   return ids.map((id) => nameFor(items, id)).join(", ");
+}
+function domainTags(ids, limit = ids.length) {
+  const group = el("div", "domain-tags");
+  for (const id of ids.slice(0, limit)) {
+    const tag = el("span", "domain-tag", nameFor(data.domains, id));
+    tag.dataset.domainColor = id;
+    group.append(tag);
+  }
+  if (ids.length > limit) {
+    const remaining = ids.slice(limit);
+    const names = labels(data.domains, remaining);
+    const count = el("span", "domain-overflow", "+" + nf(remaining.length));
+    count.setAttribute("aria-hidden", "true");
+    count.title = names;
+    group.append(count, el("span", "sr-only", names));
+  }
+  return group;
 }
 function nf(n) {
   return new Intl.NumberFormat(lang === "zh" ? "zh-CN" : "en-US").format(n);
@@ -139,7 +160,29 @@ function urlUpdate(replace = false) {
     location.pathname + (search ? "?" + search : "") + location.hash,
   );
 }
+function queryFromSearch() {
+  const q = search.value.trim();
+  return { q, sort: q ? "relevance" : "stars" };
+}
+function cancelSearch() {
+  clearTimeout(searchTimer);
+  searchTimer = null;
+}
+function scheduleSearch() {
+  cancelSearch();
+  searchTimer = setTimeout(() => {
+    searchTimer = null;
+    const query = queryFromSearch();
+    if (query.q !== state.q) change(query, true);
+  }, 220);
+}
 function change(values, replace = false) {
+  // Apply a pending query together with a filter selection.
+  if (searchTimer !== null && !Object.hasOwn(values, "q")) {
+    const query = queryFromSearch();
+    if (query.q !== state.q) values = { ...query, ...values };
+  }
+  cancelSearch();
   state = { ...state, ...values, page: values.page || 1 };
   urlUpdate(replace);
   render();
@@ -149,13 +192,24 @@ function option(select, value, label) {
   o.value = value;
   select.append(o);
 }
+function setSelection(select, value) {
+  select.value = value;
+  const control = select.closest(".filter-control");
+  if (!control) return;
+  control.querySelector(".filter-value").textContent =
+    select.selectedOptions[0]?.textContent || "";
+  control.classList.toggle(
+    "is-applied",
+    select.id !== "sort" && Boolean(select.value),
+  );
+}
 function fillSelect(id, items, all, key) {
   const s = $(id);
   s.replaceChildren();
   option(s, "", t(all));
   for (const item of items)
     option(s, item.id, item[lang] || item.en || item.id);
-  s.value = state[key] || "";
+  setSelection(s, state[key] || "");
 }
 function renderControls() {
   fillSelect("type", data.tool_types, "allTypes", "type");
@@ -197,9 +251,10 @@ function renderControls() {
     ["updated", "recentlyUpdated"],
   ])
     option($("sort"), id, t(key));
-  $("sort").value = state.sort;
+  setSelection($("sort"), state.sort);
   $("include-archived").checked = state.archived;
-  if ($("search").value !== state.q) $("search").value = state.q;
+  if (searchTimer === null && !searchComposing && search.value.trim() !== state.q)
+    search.value = state.q;
   const moreCount = [
     state.language,
     state.license,
@@ -220,19 +275,19 @@ function renderControls() {
   });
   const activeDomain = document.activeElement?.dataset?.domain;
   $("domain-list").replaceChildren();
-  for (const [index, d] of [
+  for (const d of [
     { id: "", en: t("allDomains"), zh: t("allDomains") },
     ...data.domains,
-  ].entries()) {
+  ]) {
     const b = button(
       "",
       () => change({ domain: d.id }),
       "domain-button" + (state.domain === d.id ? " active" : ""),
     );
     b.dataset.domain = d.id;
+    if (d.id) b.dataset.domainColor = d.id;
     b.setAttribute("aria-pressed", String(state.domain === d.id));
     b.append(
-      el("span", "domain-index", index ? String(index).padStart(2, "0") : "∷"),
       el("span", "", d[lang] || d.en),
       el(
         "span",
@@ -356,6 +411,13 @@ function empty(title, body, action, handler) {
   if (action) n.append(button(action, handler, "primary-button"));
   return n;
 }
+function growthHelp() {
+  const help = el("details", "growth-help");
+  const summary = el("summary", "", "?");
+  summary.setAttribute("aria-label", t("growthHelp"));
+  help.append(summary, el("p", "", t("growthHelpText")));
+  return help;
+}
 function render() {
   if (!data) return;
   renderControls();
@@ -408,15 +470,13 @@ function render() {
         : state.view === "trending" && !state.q
           ? "trendingEmpty"
           : "noResults";
-    target.append(
-      empty(t(key), t(key + "Body"), t("clear"), () => {
-        state = { ...defaultState };
-        urlUpdate();
-        render();
-      }),
-    );
+    target.append(empty(t(key), t(key + "Body"), t("clear"), () => {
+      search.value = "";
+      change(defaultState);
+    }));
   } else {
     const table = el("table", "tool-table");
+    table.setAttribute("aria-labelledby", "result-heading");
     const head = el("thead");
     const hr = el("tr");
     for (const [key, cls] of [
@@ -427,8 +487,15 @@ function render() {
       ["updated", "updated-column"],
       ["actions", "action-column"],
     ]) {
-      const th = el("th", cls, t(key));
+      const th = el("th", cls);
       th.scope = "col";
+      if (key === "growth") {
+        const heading = el("div", "growth-heading");
+        heading.append(el("span", "", t(key)), growthHelp());
+        th.append(heading);
+      } else {
+        th.textContent = t(key);
+      }
       hr.append(th);
     }
     head.append(hr);
@@ -441,54 +508,56 @@ function render() {
       const row = el("tr");
       row.dataset.repo = String(r.id);
       const td = el("td", "tool-column");
+      const identity = el("div", "tool-identity");
+      const owner = r.full_name.split("/")[0];
+      const [first, second] = owner.split("-");
+      const initials = second ? first[0] + second[0] : owner.slice(0, 2);
+      const mark = el("span", "tool-mark", initials.toUpperCase());
+      mark.setAttribute("aria-hidden", "true");
+      const copy = el("div");
       const title = el("div", "tool-title");
       const open = button(r.name, () => openDetail(r), "tool-name");
       open.dataset.detail = String(r.id);
-      title.append(open, link("↗", r.url, "repo-arrow"));
-      title.lastChild.setAttribute("aria-label", r.full_name + " GitHub");
-      td.append(
-        title,
-        el("span", "tool-owner", r.full_name.split("/")[0]),
-        el("p", "tool-description", r.description),
-      );
-      const types = el("div", "type-line");
+      const external = link("↗", r.url, "repo-arrow");
+      external.setAttribute("aria-label", r.full_name + " GitHub");
+      title.append(open, external);
+      const meta = el("div", "tool-meta");
+      meta.append(el("span", "tool-owner", owner));
       for (const type of r.tool_types.slice(0, 2))
-        types.append(el("span", "tag", nameFor(data.tool_types, type)));
+        meta.append(el("span", "tag", nameFor(data.tool_types, type)));
       if (r.archived || r.unavailable)
-        types.append(
+        meta.append(
           el("span", "tag", t(r.archived ? "archived" : "unavailable")),
         );
-      td.append(types);
+      copy.append(title, meta, el("p", "tool-description", r.description));
+      const tags = domainTags(r.domains, 2);
+      const compactTags = tags.cloneNode(true);
+      compactTags.classList.add("compact-domains");
+      copy.append(compactTags);
+      identity.append(mark, copy);
+      td.append(identity);
       row.append(td);
       const domain = el("td", "domain-column");
-      const tags = el("div", "domain-tags");
-      r.domains
-        .slice(0, 2)
-        .forEach((id) =>
-          tags.append(el("span", "domain-tag", nameFor(data.domains, id))),
-        );
-      if (r.domains.length > 2)
-        tags.append(el("span", "small-label", `+${r.domains.length - 2}`));
       domain.append(tags);
       row.append(domain);
-      row.append(el("td", "metric star-column", nf(r.stars)));
-      const change = r.growth?.weekly_delta;
-      const cell = el(
-        "td",
-        "metric growth-column " +
-          (change == null
-            ? "unknown"
-            : change > 0
-              ? "positive"
-              : change < 0
-                ? "negative"
-                : ""),
-        change == null ? "—" : signed(change),
-      );
-      if (change == null) {
-        cell.title = t("baseline");
-        cell.append(el("small", "", t("baseline")));
-      } else cell.title = date(r.growth.from) + " → " + date(r.growth.to);
+      const stars = el("td", "metric star-column");
+      const starValue = el("span", "star-value");
+      starValue.append(icon("star"), document.createTextNode(nf(r.stars)));
+      stars.append(starValue);
+      row.append(stars);
+      const weeklyDelta = r.growth?.weekly_delta;
+      const cell = el("td", "metric growth-column");
+      if (weeklyDelta == null) {
+        const dash = el("span", "growth-missing", "—");
+        dash.title = t("baseline");
+        dash.setAttribute("aria-hidden", "true");
+        cell.append(dash, el("span", "sr-only", t("baseline")));
+      } else {
+        if (weeklyDelta !== 0)
+          cell.classList.add(weeklyDelta > 0 ? "positive" : "negative");
+        cell.textContent = signed(weeklyDelta);
+        cell.title = date(r.growth.from) + " → " + date(r.growth.to);
+      }
       row.append(cell);
       const updated = el("td", "metric updated-column", age(r.pushed_at));
       updated.title = date(r.pushed_at);
@@ -583,11 +652,6 @@ function section(container, title) {
   container.append(s);
   return s;
 }
-function pills(parent, items) {
-  const n = el("div", "pill-group");
-  for (const text of items) n.append(el("span", "pill", text));
-  parent.append(n);
-}
 function openDetail(r) {
   detailRepo = r;
   const root = $("detail-content");
@@ -622,10 +686,10 @@ function openDetail(r) {
   }
   root.append(metrics);
   const purpose = section(root, t("purpose"));
-  pills(purpose, [
-    ...r.domains.map((id) => nameFor(data.domains, id)),
-    ...r.tool_types.map((id) => nameFor(data.tool_types, id)),
-  ]);
+  const tags = domainTags(r.domains);
+  for (const type of r.tool_types)
+    tags.append(el("span", "tag", nameFor(data.tool_types, type)));
+  purpose.append(tags);
   if (r.tasks.length) purpose.append(el("p", "", labels(data.tasks, r.tasks)));
   const ev = section(root, t("evidence"));
   ev.append(el("p", "", t("evidenceIntro")));
@@ -745,7 +809,7 @@ function openComparison() {
   const body = el("tbody");
   const rows = [
     ["description", (r) => r.description],
-    ["domains", (r) => labels(data.domains, r.domains)],
+    ["domains", (r) => domainTags(r.domains)],
     ["type", (r) => labels(data.tool_types, r.tool_types)],
     ["task", (r) => labels(data.tasks, r.tasks) || t("none")],
     ["stars", (r) => nf(r.stars)],
@@ -784,9 +848,14 @@ function openComparison() {
   for (const [key, get] of rows) {
     const row = el("tr"),
       label = el("th", "", t(key));
+    row.dataset.field = key;
     label.scope = "row";
     row.append(label);
-    for (const r of repos) row.append(el("td", "", get(r)));
+    for (const r of repos) {
+      const td = el("td");
+      td.append(get(r));
+      row.append(td);
+    }
     body.append(row);
   }
   const last = el("tr");
@@ -940,25 +1009,22 @@ async function load() {
 }
 $("search-form").addEventListener("submit", (e) => {
   e.preventDefault();
-  clearTimeout(searchTimer);
-  change({
-    q: $("search").value.trim(),
-    sort: $("search").value.trim() ? "relevance" : "stars",
-  });
+  if (searchComposing) return;
+  cancelSearch();
+  const query = queryFromSearch();
+  if (query.q !== state.q || query.sort !== state.sort || state.page !== 1)
+    change(query);
 });
-$("search").addEventListener("input", () => {
-  clearTimeout(searchTimer);
-  searchTimer = setTimeout(
-    () =>
-      change(
-        {
-          q: $("search").value.trim(),
-          sort: $("search").value.trim() ? "relevance" : "stars",
-        },
-        true,
-      ),
-    220,
-  );
+search.addEventListener("compositionstart", () => {
+  searchComposing = true;
+  cancelSearch();
+});
+search.addEventListener("compositionend", () => {
+  searchComposing = false;
+  scheduleSearch();
+});
+search.addEventListener("input", (e) => {
+  if (!e.isComposing && !searchComposing) scheduleSearch();
 });
 for (const [id, key] of [
   ["type", "type"],
@@ -981,25 +1047,23 @@ $("views").addEventListener("click", (e) => {
         new: "new",
         trending: "growth",
         popular: "stars",
-        all: state.q ? "relevance" : "stars",
+        all: queryFromSearch().sort,
       }[b.dataset.view],
     });
 });
 $("clear").addEventListener("click", () => {
-  state = {
+  search.value = "";
+  change({
     ...defaultState,
     view: state.view,
     sort: { new: "new", trending: "growth" }[state.view] || "stars",
-  };
-  urlUpdate();
-  render();
+  });
 });
 $("explore").addEventListener("click", () =>
-  change({ view: "all", sort: state.q ? "relevance" : "stars" }),
+  change({ view: "all", sort: queryFromSearch().sort }),
 );
 $("saved").addEventListener("click", () => change({ view: "saved" }));
 $("method").addEventListener("click", openMethod);
-$("method-secondary").addEventListener("click", openMethod);
 $("language").addEventListener("click", () => {
   lang = lang === "en" ? "zh" : "en";
   try {
@@ -1014,9 +1078,12 @@ $("language").addEventListener("click", () => {
 });
 $("compare-open").addEventListener("click", openComparison);
 $("compare-clear").addEventListener("click", () => {
+  const first = compare.values().next().value;
   compare.clear();
   urlUpdate(true);
   render();
+  const trigger = $("results").querySelector(`[data-compare="${first}"]`);
+  (trigger || $("results")).focus();
 });
 document
   .querySelectorAll("[data-close]")
@@ -1067,7 +1134,9 @@ $("import-file").addEventListener("change", async () => {
   }
 });
 window.addEventListener("popstate", () => {
+  cancelSearch();
   state = readState(location.search);
+  search.value = state.q;
   const p = new URLSearchParams(location.search);
   if (p.has("lang")) {
     lang = p.get("lang") === "zh" ? "zh" : "en";
@@ -1090,16 +1159,33 @@ window.addEventListener("storage", (e) => {
     } catch {}
   }
 });
+document.addEventListener("click", (event) => {
+  for (const popover of document.querySelectorAll(OPEN_POPOVER)) {
+    if (!popover.contains(event.target)) popover.open = false;
+  }
+});
 document.addEventListener("keydown", (e) => {
+  if (e.defaultPrevented || e.isComposing || document.querySelector("dialog[open]"))
+    return;
+  if (e.key === "Escape") {
+    const popover = document.querySelector(OPEN_POPOVER);
+    if (popover) {
+      const restoreFocus = popover.contains(document.activeElement);
+      popover.open = false;
+      if (restoreFocus) popover.querySelector("summary").focus();
+      e.preventDefault();
+    }
+    return;
+  }
   if (
     e.key === "/" &&
-    !["INPUT", "TEXTAREA", "SELECT"].includes(
-      document.activeElement?.tagName,
-    ) &&
-    !document.querySelector("dialog[open]")
+    !e.altKey &&
+    !e.ctrlKey &&
+    !e.metaKey &&
+    !document.activeElement?.matches("input, textarea, select, [contenteditable]")
   ) {
     e.preventDefault();
-    $("search").focus();
+    search.focus();
   }
 });
 translatePage();

@@ -8,10 +8,10 @@
       content="Discover, compare and save open research tools for genomics, single-cell analysis, spatial omics, protein AI and more. Evidence-linked. Updated weekly."
     />
     <meta name="theme-color" content="#214cc5" />
-    <title>OmicsAtlas-AI — Research tools, in context</title>
+    <title>OmicsAtlas-AI | Omics research tools</title>
     <link rel="icon" href="assets/atlas.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="assets/style.css" />
-    <script type="module" src="assets/app.js"></script>
+    <link rel="stylesheet" href="assets/style.css?v=2" />
+    <script type="module" src="assets/app.js?v=2"></script>
   </head>
   <body>
     <a class="skip" href="#results" data-i18n="skip">Skip to tools</a>
@@ -58,21 +58,13 @@
     <main class="page-shell">
       <section class="intro" aria-labelledby="page-title">
         <div>
-          <p class="eyebrow" data-i18n="eyebrow">
-            THE OPEN RESEARCH TOOL DIRECTORY
-          </p>
-          <h1 id="page-title" data-i18n="title">
-            Research tools. A clearer view.
-          </h1>
+          <h1 id="page-title" data-i18n="title">Omics research tools</h1>
           <p class="intro-text" data-i18n="intro">
-            Find your next omics tool, understand the evidence, and build your
-            shortlist.
+            Discover and compare research software with evidence from its
+            original sources.
           </p>
         </div>
         <div class="update-card">
-          <span class="update-label" data-i18n="directory"
-            >DIRECTORY SNAPSHOT</span
-          >
           <p id="snapshot-status" role="status">
             <span class="status-dot loading"></span
             ><span data-i18n="loading">Loading directory…</span>
@@ -83,28 +75,11 @@
         </div>
       </section>
       <div class="workspace">
-        <aside class="sidebar" aria-label="Research domains">
-          <div class="sidebar-heading">
-            <h2 data-i18n="domains">Research domains</h2>
-            <span class="small-label">11</span>
-          </div>
+        <aside class="sidebar" aria-labelledby="domains-heading">
+          <h2 id="domains-heading" class="sidebar-heading" data-i18n="domains">
+            Research domains
+          </h2>
           <div id="domain-list" class="domain-list"></div>
-          <div class="sidebar-note">
-            <span class="note-symbol">↗</span>
-            <h3 data-i18n="evidenceTitle">Know why it belongs.</h3>
-            <p data-i18n="evidenceNote">
-              Every listed tool has linked evidence of its research purpose and
-              software use.
-            </p>
-            <button
-              type="button"
-              class="inline-link"
-              id="method-secondary"
-              data-i18n="readMethod"
-            >
-              Read our method →
-            </button>
-          </div>
           <div class="saved-actions" id="saved-actions" hidden>
             <button
               type="button"
@@ -130,19 +105,20 @@
         </aside>
         <section class="directory" aria-label="Tool directory">
           <form id="search-form" role="search" class="search-bar">
-            <span class="search-symbol" aria-hidden="true">⌕</span
-            ><label class="sr-only" for="search" data-i18n="searchLabel"
+            <svg class="icon search-symbol" viewBox="0 0 20 20" aria-hidden="true">
+              <circle cx="8.5" cy="8.5" r="5" />
+              <path d="m12 12 4 4" />
+            </svg>
+            <label class="sr-only" for="search" data-i18n="searchLabel"
               >Search all tools</label
             ><input
               type="search"
               id="search"
+              aria-keyshortcuts="/"
               autocomplete="off"
               placeholder="Search tools, tasks, or research areas…"
               data-placeholder="searchPlaceholder"
-            /><kbd aria-hidden="true">/</kbd
-            ><button type="submit" class="primary-button" data-i18n="search">
-              Search
-            </button>
+            /><kbd aria-hidden="true">/</kbd>
           </form>
           <div class="view-bar" aria-label="Directory views" id="views">
             <button
@@ -180,13 +156,16 @@
             </button>
           </div>
           <div class="filters">
-            <label
-              ><span data-i18n="type">Tool type</span
-              ><select id="type"></select></label
-            ><label
-              ><span data-i18n="task">Research task</span
-              ><select id="task"></select
-            ></label>
+            <label class="filter-control">
+              <span data-i18n="type">Tool type</span>
+              <span class="filter-value" aria-hidden="true"></span>
+              <select id="type"></select>
+            </label>
+            <label class="filter-control">
+              <span data-i18n="task">Research task</span>
+              <span class="filter-value" aria-hidden="true"></span>
+              <select id="task"></select>
+            </label>
             <details class="more-filters" id="more-filters">
               <summary data-i18n="more">More filters</summary>
               <div class="filter-popover">
@@ -216,42 +195,45 @@
               Clear filters
             </button>
           </div>
-          <div class="results-toolbar">
-            <div>
-              <h2 id="result-heading" data-i18n="allTools">All tools</h2>
-              <p
-                id="result-count"
-                role="status"
-                aria-live="polite"
-                data-i18n="loading"
-              >
-                Loading directory…
-              </p>
+          <div class="results-card">
+            <div class="results-toolbar">
+              <div>
+                <h2 id="result-heading" data-i18n="allTools">All tools</h2>
+                <p
+                  id="result-count"
+                  role="status"
+                  aria-live="polite"
+                  data-i18n="loading"
+                >
+                  Loading directory…
+                </p>
+              </div>
+              <div class="result-actions">
+                <label class="filter-control">
+                  <span data-i18n="sort">Sort</span>
+                  <span class="filter-value" aria-hidden="true"></span>
+                  <select id="sort"></select>
+                </label>
+                <details class="export-menu">
+                  <summary class="subtle-button" data-i18n="export">
+                    Export ↓
+                  </summary>
+                  <div class="export-options">
+                    <button type="button" id="export-csv">CSV</button
+                    ><button type="button" id="export-json">JSON</button>
+                  </div>
+                </details>
+              </div>
             </div>
-            <div class="result-actions">
-              <label class="sort-label"
-                ><span data-i18n="sort">Sort</span
-                ><select id="sort"></select
-              ></label>
-              <details class="export-menu">
-                <summary class="subtle-button" data-i18n="export">
-                  Export ↓
-                </summary>
-                <div class="export-options">
-                  <button type="button" id="export-csv">CSV</button
-                  ><button type="button" id="export-json">JSON</button>
-                </div>
-              </details>
+            <p class="context-note" id="context-note" hidden></p>
+            <div id="results" class="results" tabindex="-1" aria-busy="true">
+              <div class="empty">
+                <div class="loader"></div>
+                <h3 data-i18n="loading">Loading directory…</h3>
+              </div>
             </div>
+            <div class="pagination" id="pagination"></div>
           </div>
-          <p class="context-note" id="context-note" hidden></p>
-          <div id="results" class="results" tabindex="-1" aria-busy="true">
-            <div class="empty">
-              <div class="loader"></div>
-              <h3 data-i18n="loading">Loading directory…</h3>
-            </div>
-          </div>
-          <div class="pagination" id="pagination"></div>
         </section>
       </div>
       <footer class="site-footer">
@@ -284,9 +266,9 @@
         type="button"
         id="compare-clear"
         class="subtle-button"
-        data-i18n="clear"
+        data-i18n="clearComparison"
       >
-        Clear
+        Clear comparison
       </button>
     </div>
     <dialog

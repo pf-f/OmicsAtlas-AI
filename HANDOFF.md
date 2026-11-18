@@ -78,12 +78,20 @@ Actions publishing and retains the existing `main`-only environment policy.
 
 ## Experience and visual decisions
 
-A continuous directory with aligned metrics, compact navigation, white/near-white
-surfaces and one blue accent. System fonts with Chinese fallback. Search covers
-all accepted records, filter/sort/page context is URL-backed, bookmarks stay local,
-and exports include every filtered result rather than only the displayed page.
-Source evidence is shown in a named modal, with safe text rendering. Keyboard
-focus, dialog feedback and empty saved-list recovery were tested.
+The desktop directory uses a sticky header, a cool gray page and a white
+results card. Local organization initials anchor rows. A shared palette maps
+domain IDs to named color tags across navigation, rows, details and comparison.
+Numbers align in monospace, and a dash links the visual state of missing weekly
+growth to an explanation in the table header.
+
+Search covers the full catalog and waits for IME composition to finish.
+Native filter controls support keyboard input. The URL stores filters, sort,
+and page, bookmarks stay local, and exports include every filtered result.
+The source evidence dialog renders linked excerpts as text.
+
+With the same November 18 snapshot at 1280×720, the first screen fits three
+complete rows in either language. Median row height is about 86 CSS pixels,
+compared with about 120 before the update.
 
 Independent UI review used the actual rendered screenshots and Chromium. Five
 specific findings (dialog naming, feedback under the modal, reopening filters,
@@ -106,7 +114,7 @@ item, because hidden dialog controls must not capture the restored focus.
   by the evaluator; broad multi-domain tags still need ongoing curation.
 - `python scripts/update_catalog.py --validate`: 221 unique tools after the real
   refresh; canonical state and public snapshot match.
-- `python tests/browser_check.py`: all 10 flow groups passed using the actual
+- `python tests/browser_check.py`: all 13 flow groups passed using the actual
   catalog under `/OmicsAtlas-AI/`. Search, URL/back restoration, pagination,
   bookmark persistence/import/export, four-way comparison, source detail,
   accessible dialog names, focus, modal copy feedback, advanced-filter collapse,

@@ -49,22 +49,52 @@ def run():
         )
         page.screenshot(path=str(ARTIFACTS / "directory-en.png"))
         passed.append("real catalog and renamed Pages subpath")
+        tones = page.locator(".domain-button[data-domain-color]").evaluate_all(
+            "(buttons) => buttons.map(b => getComputedStyle(b, '::before').backgroundColor)"
+        )
+        assert len(set(tones)) == len(DATA["domains"])
+        growth_help = page.locator(".growth-help summary")
+        expect(growth_help).to_have_accessible_name("About 7-day change")
+        growth_help.focus()
+        growth_help.press("Enter")
+        explanation = page.locator(".growth-help p")
+        expect(explanation).to_be_visible()
+        expect(explanation).to_contain_text("6–8 days apart")
+        growth_help.press("Escape")
+        expect(explanation).not_to_be_visible()
+        expect(growth_help).to_be_focused()
+        passed.append("distinct domain colors and keyboard-accessible weekly change help")
+        type_select = page.get_by_role("combobox", name="Tool type", exact=True)
+        type_select.click(position={"x": 12, "y": 17})
+        assert type_select.evaluate("(select) => select.matches(':open')")
+        page.keyboard.press("Escape")
         # A tool outside the first page is searchable across all domains.
         target = next(
             r
             for r in reversed(DATA["repositories"])
             if not r["archived"] and not r["unavailable"]
         )
-        page.get_by_role("searchbox").fill(target["full_name"])
-        page.get_by_role("searchbox").press("Enter")
+        search = page.get_by_role("searchbox")
+        search.fill(target["full_name"] + " ")
         expect(
             page.get_by_role("button", name=target["name"], exact=True)
         ).to_be_visible()
+        expect(search).to_have_value(target["full_name"] + " ")
+        history_length = page.evaluate("history.length")
+        form = page.locator("#search-form")
+        form.evaluate(
+            """form => form.addEventListener("submit", () => {
+                form.dataset.submitted = "true";
+            }, { once: true })"""
+        )
+        search.press("Enter")
+        expect(form).to_have_attribute("data-submitted", "true")
+        assert page.evaluate("history.length") == history_length
         page.reload()
         expect(
             page.get_by_role("button", name=target["name"], exact=True)
         ).to_be_visible()
-        passed.append("full-library search and URL restoration")
+        passed.append("instant full-library search and URL restoration")
         page.locator("#clear").click()
         page.locator('[data-domain="single-cell"]').click()
         expect(page.locator("#result-heading")).to_have_text("Single-cell")
@@ -112,6 +142,9 @@ def run():
         page.locator("#compare-open").click()
         expect(page.locator("#compare-dialog")).to_be_visible()
         assert page.locator(".comparison thead th").count() == 5
+        expect(
+            page.locator('.comparison [data-field="domains"] .domain-tag').first
+        ).to_be_visible()
         page.screenshot(path=str(ARTIFACTS / "comparison.png"))
         page.keyboard.press("Escape")
         expect(page.locator("#compare-dialog")).not_to_be_visible()
@@ -122,6 +155,7 @@ def run():
             page.locator("#detail-content h2").inner_text()
         )
         expect(page.locator(".evidence-card").first).to_be_visible()
+        expect(page.locator("#detail-content .domain-tag").first).to_be_visible()
         assert (
             page.locator('#detail-content a[href^="https://github.com/"]').count() > 0
         )
@@ -171,23 +205,46 @@ def run():
         page.locator('[data-view="new"]').click()
         page.locator("#clear").click()
         expect(page.locator("#sort")).to_have_value("new")
-        page.locator("#more-filters summary").click()
+        advanced = page.locator("#more-filters summary")
+        advanced.click()
         page.locator("#environment").select_option("docker")
-        page.locator("#more-filters summary").click()
+        advanced.press("Escape")
+        expect(advanced).to_be_focused()
         page.locator("#sort").select_option("updated")
         assert not page.locator("#more-filters").evaluate("(n)=>n.open")
+        advanced.click()
+        page.locator(".export-menu summary").click()
+        expect(page.locator(".export-options")).to_be_visible()
+        expect(page.locator(".filter-popover")).not_to_be_visible()
+        page.locator("#page-title").click()
+        expect(page.locator(".export-options")).not_to_be_visible()
+        passed.append("native filter controls and dismissal of filter and export panels")
         page.locator("#clear").click()
         page.locator('[data-view="all"]').click()
         page.locator("#language").click()
         expect(page.locator("html")).to_have_attribute("lang", "zh-CN")
-        page.locator("#search").fill("单细胞")
-        page.locator("#search").press("Enter")
+        expect(growth_help).to_have_accessible_name("了解 7 天变化")
+        search.focus()
+        ime = context.new_cdp_session(page)
+        ime.send(
+            "Input.imeSetComposition",
+            {"text": "danxibao", "selectionStart": 8, "selectionEnd": 8},
+        )
+        expect(search).to_have_value("danxibao")
+        # Allow the live-search delay to elapse while composition is active.
+        page.wait_for_timeout(300)
+        expect(page.locator("#result-heading")).to_have_text("全部工具")
+        ime.send("Input.insertText", {"text": "单细胞"})
+        expect(page.locator("#result-heading")).to_have_text("搜索结果")
         expect(page.locator("tbody tr").first).to_be_visible()
         page.screenshot(path=str(ARTIFACTS / "directory-zh.png"))
         page.reload()
         expect(page.locator("html")).to_have_attribute("lang", "zh-CN")
         page.locator("#clear").click()
-        page.locator("#compare-clear").click()
+        clear_comparison = page.get_by_role("button", name="清空对比", exact=True)
+        clear_comparison.click()
+        expect(page.locator("#compare-bar")).not_to_be_visible()
+        expect(page.locator("#results [data-compare]:focus")).to_have_count(1)
         page.set_viewport_size({"width": 1280, "height": 720})
         page.screenshot(path=str(ARTIFACTS / "desktop-1280.png"))
         assert page.evaluate(
@@ -204,7 +261,7 @@ def run():
         page.keyboard.press("/")
         expect(page.locator("#search")).to_be_focused()
         passed.append(
-            "Chinese search, translation persistence, desktop sizes and CSS zoom reflow"
+            "Chinese IME search, translation persistence, desktop sizes and CSS zoom reflow"
         )
         assert not errors, errors
         # Read-only mocked states: data failure, stale snapshot and hostile text.
@@ -225,6 +282,11 @@ def run():
             "Long description <script>window.injected=1</script> " + ("tool " * 100)
         )
         stress["repositories"][0]["url"] = "javascript:alert(1)"
+        sample_repos = sorted(expected, key=lambda r: (-r["stars"], r["full_name"]))[:4]
+        by_id = {r["id"]: r for r in stress["repositories"]}
+        deltas = [None, 0, 12, -3]
+        for repo, delta in zip(sample_repos, deltas, strict=True):
+            by_id[repo["id"]]["growth"].update(weekly_delta=delta)
         sample = browser.new_context(viewport={"width": 1280, "height": 720})
         pg = sample.new_page()
         pg.route("**/data/catalog.json", lambda route: route.fulfill(json=stress))
@@ -237,6 +299,20 @@ def run():
         passed.append(
             "load failure/retry, stale snapshot, HTML and URL injection defenses"
         )
+        for repo, delta, display in zip(
+            sample_repos, deltas, ["—", "0", "+12", "-3"], strict=True
+        ):
+            cell = pg.locator(f'[data-repo="{repo["id"]}"] .growth-column')
+            if delta is None:
+                expect(cell.locator(".growth-missing")).to_have_text(display)
+                expect(cell).to_have_accessible_name("Awaiting baseline")
+            else:
+                expect(cell).to_have_text(display)
+        pg.emulate_media(reduced_motion="reduce")
+        top_row = pg.locator("#results tbody tr").first
+        top_row.hover()
+        expect(top_row.locator(".repo-arrow")).to_have_css("transform", "none")
+        passed.append("missing, zero, positive and negative weekly change and reduced motion")
         # Exercise pure search/export boundary behavior in the actual JS runtime.
         result = page.evaluate(
             """async()=>{const m=await import('./assets/logic.js');return {csv:m.csvExport([{full_name:'=FORMULA()',description:'@payload',domains:[],tasks:[],tool_types:[]}]),bad:m.safeUrl('javascript:alert(1)'),round:m.readState('?domain=single-cell&page=2&archived=1')};}"""
