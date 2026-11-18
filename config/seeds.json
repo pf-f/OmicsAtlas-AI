@@ -1,0 +1,272 @@
+[
+  {
+    "full_name": "scverse/scanpy",
+    "domain_hint": "single-cell",
+    "source_url": "https://github.com/scverse/scanpy",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "satijalab/seurat",
+    "domain_hint": "single-cell",
+    "source_url": "https://github.com/satijalab/seurat",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "scverse/scvi-tools",
+    "domain_hint": "single-cell",
+    "source_url": "https://github.com/scverse/scvi-tools",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "nf-core/scrnaseq",
+    "domain_hint": "single-cell",
+    "source_url": "https://github.com/nf-core/scrnaseq",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "scverse/squidpy",
+    "domain_hint": "spatial-omics",
+    "source_url": "https://github.com/scverse/squidpy",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "prism-oncology/sopa",
+    "domain_hint": "spatial-omics",
+    "source_url": "https://github.com/prism-oncology/sopa",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "BayraktarLab/cell2location",
+    "domain_hint": "spatial-omics",
+    "source_url": "https://github.com/BayraktarLab/cell2location",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "RubD/Giotto",
+    "domain_hint": "spatial-omics",
+    "source_url": "https://github.com/RubD/Giotto",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "bioFAM/MOFA2",
+    "domain_hint": "multi-omics",
+    "source_url": "https://github.com/bioFAM/MOFA2",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "scverse/muon",
+    "domain_hint": "multi-omics",
+    "source_url": "https://github.com/scverse/muon",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "welch-lab/liger",
+    "domain_hint": "multi-omics",
+    "source_url": "https://github.com/welch-lab/liger",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "gao-lab/GLUE",
+    "domain_hint": "multi-omics",
+    "source_url": "https://github.com/gao-lab/GLUE",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "google-deepmind/alphafold",
+    "domain_hint": "protein-ai",
+    "source_url": "https://github.com/google-deepmind/alphafold",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "sokrypton/ColabFold",
+    "domain_hint": "protein-ai",
+    "source_url": "https://github.com/sokrypton/ColabFold",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "facebookresearch/esm",
+    "domain_hint": "protein-ai",
+    "source_url": "https://github.com/facebookresearch/esm",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "jwohlwend/boltz",
+    "domain_hint": "protein-ai",
+    "source_url": "https://github.com/jwohlwend/boltz",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "RosettaCommons/RFdiffusion",
+    "domain_hint": "protein-ai",
+    "source_url": "https://github.com/RosettaCommons/RFdiffusion",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "mahmoodlab/CLAM",
+    "domain_hint": "ai-pathology",
+    "source_url": "https://github.com/mahmoodlab/CLAM",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "mahmoodlab/UNI",
+    "domain_hint": "ai-pathology",
+    "source_url": "https://github.com/mahmoodlab/UNI",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "mahmoodlab/CONCH",
+    "domain_hint": "ai-pathology",
+    "source_url": "https://github.com/mahmoodlab/CONCH",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "prov-gigapath/prov-gigapath",
+    "domain_hint": "ai-pathology",
+    "source_url": "https://github.com/prov-gigapath/prov-gigapath",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "broadinstitute/gatk",
+    "domain_hint": "genomics",
+    "source_url": "https://github.com/broadinstitute/gatk",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "lh3/minimap2",
+    "domain_hint": "genomics",
+    "source_url": "https://github.com/lh3/minimap2",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "samtools/samtools",
+    "domain_hint": "genomics",
+    "source_url": "https://github.com/samtools/samtools",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "lh3/bwa",
+    "domain_hint": "genomics",
+    "source_url": "https://github.com/lh3/bwa",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "COMBINE-lab/salmon",
+    "domain_hint": "transcriptomics",
+    "source_url": "https://github.com/COMBINE-lab/salmon",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "pachterlab/kallisto",
+    "domain_hint": "transcriptomics",
+    "source_url": "https://github.com/pachterlab/kallisto",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "nf-core/rnaseq",
+    "domain_hint": "transcriptomics",
+    "source_url": "https://github.com/nf-core/rnaseq",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "thelovelab/DESeq2",
+    "domain_hint": "transcriptomics",
+    "source_url": "https://github.com/thelovelab/DESeq2",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "deeptools/deepTools",
+    "domain_hint": "epigenomics",
+    "source_url": "https://github.com/deeptools/deepTools",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "nf-core/atacseq",
+    "domain_hint": "epigenomics",
+    "source_url": "https://github.com/nf-core/atacseq",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "nf-core/chipseq",
+    "domain_hint": "epigenomics",
+    "source_url": "https://github.com/nf-core/chipseq",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "aertslab/pycisTopic",
+    "domain_hint": "epigenomics",
+    "source_url": "https://github.com/aertslab/pycisTopic",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "OpenMS/OpenMS",
+    "domain_hint": "proteomics",
+    "source_url": "https://github.com/OpenMS/OpenMS",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "vdemichev/DiaNN",
+    "domain_hint": "proteomics",
+    "source_url": "https://github.com/vdemichev/DiaNN",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "MannLabs/alphapept",
+    "domain_hint": "proteomics",
+    "source_url": "https://github.com/MannLabs/alphapept",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "Nesvilab/FragPipe",
+    "domain_hint": "proteomics",
+    "source_url": "https://github.com/Nesvilab/FragPipe",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "sneumann/xcms",
+    "domain_hint": "metabolomics",
+    "source_url": "https://github.com/sneumann/xcms",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "mzmine/mzmine",
+    "domain_hint": "metabolomics",
+    "source_url": "https://github.com/mzmine/mzmine",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "shuzhao-li/asari",
+    "domain_hint": "metabolomics",
+    "source_url": "https://github.com/shuzhao-li/asari",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "biobakery/MetaPhlAn",
+    "domain_hint": "metagenomics",
+    "source_url": "https://github.com/biobakery/MetaPhlAn",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "DerrickWood/kraken2",
+    "domain_hint": "metagenomics",
+    "source_url": "https://github.com/DerrickWood/kraken2",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "qiime2/qiime2",
+    "domain_hint": "metagenomics",
+    "source_url": "https://github.com/qiime2/qiime2",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "nf-core/mag",
+    "domain_hint": "metagenomics",
+    "source_url": "https://github.com/nf-core/mag",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  },
+  {
+    "full_name": "xia-lab/MetaboAnalystR",
+    "domain_hint": "metabolomics",
+    "source_url": "https://github.com/xia-lab/MetaboAnalystR",
+    "reason": "Core project candidate; must pass the same evidence checks as search results"
+  }
+]

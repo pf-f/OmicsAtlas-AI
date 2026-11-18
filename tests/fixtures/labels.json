@@ -1,0 +1,486 @@
+[
+  {
+    "full_name": "scverse/scanpy",
+    "accepted": true,
+    "domains": [
+      "single-cell"
+    ],
+    "split": "development"
+  },
+  {
+    "full_name": "satijalab/seurat",
+    "accepted": true,
+    "domains": [
+      "single-cell"
+    ],
+    "split": "development"
+  },
+  {
+    "full_name": "scverse/anndata",
+    "accepted": true,
+    "domains": [
+      "single-cell"
+    ],
+    "split": "additional-check"
+  },
+  {
+    "full_name": "velocyto-team/velocyto.py",
+    "accepted": true,
+    "domains": [
+      "single-cell"
+    ],
+    "split": "additional-check"
+  },
+  {
+    "full_name": "scverse/squidpy",
+    "accepted": true,
+    "domains": [
+      "spatial-omics"
+    ],
+    "split": "development"
+  },
+  {
+    "full_name": "BayraktarLab/cell2location",
+    "accepted": true,
+    "domains": [
+      "spatial-omics"
+    ],
+    "split": "development"
+  },
+  {
+    "full_name": "jianhuupenn/SpaGCN",
+    "accepted": true,
+    "domains": [
+      "spatial-omics"
+    ],
+    "split": "additional-check"
+  },
+  {
+    "full_name": "scverse/spatialdata",
+    "accepted": true,
+    "domains": [
+      "spatial-omics"
+    ],
+    "split": "additional-check"
+  },
+  {
+    "full_name": "bioFAM/MOFA2",
+    "accepted": true,
+    "domains": [
+      "multi-omics"
+    ],
+    "split": "development"
+  },
+  {
+    "full_name": "gao-lab/GLUE",
+    "accepted": true,
+    "domains": [
+      "multi-omics"
+    ],
+    "split": "development"
+  },
+  {
+    "full_name": "bioFAM/mofapy2",
+    "accepted": true,
+    "domains": [
+      "multi-omics"
+    ],
+    "split": "additional-check"
+  },
+  {
+    "full_name": "caokai1073/uniPort",
+    "accepted": true,
+    "domains": [
+      "multi-omics"
+    ],
+    "split": "additional-check"
+  },
+  {
+    "full_name": "google-deepmind/alphafold",
+    "accepted": true,
+    "domains": [
+      "protein-ai"
+    ],
+    "split": "development"
+  },
+  {
+    "full_name": "jwohlwend/boltz",
+    "accepted": true,
+    "domains": [
+      "protein-ai"
+    ],
+    "split": "development"
+  },
+  {
+    "full_name": "aqlaboratory/openfold",
+    "accepted": true,
+    "domains": [
+      "protein-ai"
+    ],
+    "split": "additional-check"
+  },
+  {
+    "full_name": "microsoft/evodiff",
+    "accepted": true,
+    "domains": [
+      "protein-ai"
+    ],
+    "split": "additional-check"
+  },
+  {
+    "full_name": "mahmoodlab/CLAM",
+    "accepted": true,
+    "domains": [
+      "ai-pathology"
+    ],
+    "split": "development"
+  },
+  {
+    "full_name": "mahmoodlab/UNI",
+    "accepted": true,
+    "domains": [
+      "ai-pathology"
+    ],
+    "split": "development"
+  },
+  {
+    "full_name": "szc19990412/TransMIL",
+    "accepted": true,
+    "domains": [
+      "ai-pathology"
+    ],
+    "split": "additional-check"
+  },
+  {
+    "full_name": "histolab/histolab",
+    "accepted": true,
+    "domains": [
+      "ai-pathology"
+    ],
+    "split": "additional-check"
+  },
+  {
+    "full_name": "broadinstitute/gatk",
+    "accepted": true,
+    "domains": [
+      "genomics"
+    ],
+    "split": "development"
+  },
+  {
+    "full_name": "lh3/bwa",
+    "accepted": true,
+    "domains": [
+      "genomics"
+    ],
+    "split": "development"
+  },
+  {
+    "full_name": "samtools/bcftools",
+    "accepted": true,
+    "domains": [
+      "genomics"
+    ],
+    "split": "additional-check"
+  },
+  {
+    "full_name": "fenderglass/Flye",
+    "accepted": true,
+    "domains": [
+      "genomics"
+    ],
+    "split": "additional-check"
+  },
+  {
+    "full_name": "COMBINE-lab/salmon",
+    "accepted": true,
+    "domains": [
+      "transcriptomics"
+    ],
+    "split": "development"
+  },
+  {
+    "full_name": "nf-core/rnaseq",
+    "accepted": true,
+    "domains": [
+      "transcriptomics"
+    ],
+    "split": "development"
+  },
+  {
+    "full_name": "alexdobin/STAR",
+    "accepted": true,
+    "domains": [
+      "transcriptomics"
+    ],
+    "split": "additional-check"
+  },
+  {
+    "full_name": "DaehwanKimLab/hisat2",
+    "accepted": true,
+    "domains": [
+      "transcriptomics"
+    ],
+    "split": "additional-check"
+  },
+  {
+    "full_name": "nf-core/atacseq",
+    "accepted": true,
+    "domains": [
+      "epigenomics"
+    ],
+    "split": "development"
+  },
+  {
+    "full_name": "nf-core/chipseq",
+    "accepted": true,
+    "domains": [
+      "epigenomics"
+    ],
+    "split": "development"
+  },
+  {
+    "full_name": "ENCODE-DCC/atac-seq-pipeline",
+    "accepted": true,
+    "domains": [
+      "epigenomics"
+    ],
+    "split": "additional-check"
+  },
+  {
+    "full_name": "MACS3-project/MACS",
+    "accepted": true,
+    "domains": [
+      "epigenomics"
+    ],
+    "split": "additional-check"
+  },
+  {
+    "full_name": "OpenMS/OpenMS",
+    "accepted": true,
+    "domains": [
+      "proteomics"
+    ],
+    "split": "development"
+  },
+  {
+    "full_name": "Nesvilab/FragPipe",
+    "accepted": true,
+    "domains": [
+      "proteomics"
+    ],
+    "split": "development"
+  },
+  {
+    "full_name": "MannLabs/alphapeptdeep",
+    "accepted": true,
+    "domains": [
+      "proteomics"
+    ],
+    "split": "additional-check"
+  },
+  {
+    "full_name": "crux-toolkit/crux-toolkit",
+    "accepted": true,
+    "domains": [
+      "proteomics"
+    ],
+    "split": "additional-check"
+  },
+  {
+    "full_name": "sneumann/xcms",
+    "accepted": true,
+    "domains": [
+      "metabolomics"
+    ],
+    "split": "development"
+  },
+  {
+    "full_name": "shuzhao-li-lab/asari",
+    "accepted": true,
+    "domains": [
+      "metabolomics"
+    ],
+    "split": "development"
+  },
+  {
+    "full_name": "xia-lab/MetaboAnalystR",
+    "accepted": true,
+    "domains": [
+      "metabolomics"
+    ],
+    "split": "additional-check"
+  },
+  {
+    "full_name": "systemsomicslab/MsdialWorkbench",
+    "accepted": true,
+    "domains": [
+      "metabolomics"
+    ],
+    "split": "additional-check"
+  },
+  {
+    "full_name": "biobakery/MetaPhlAn",
+    "accepted": true,
+    "domains": [
+      "metagenomics"
+    ],
+    "split": "development"
+  },
+  {
+    "full_name": "DerrickWood/kraken2",
+    "accepted": true,
+    "domains": [
+      "metagenomics"
+    ],
+    "split": "development"
+  },
+  {
+    "full_name": "biobakery/humann",
+    "accepted": true,
+    "domains": [
+      "metagenomics"
+    ],
+    "split": "additional-check"
+  },
+  {
+    "full_name": "biobakery/biobakery_workflows",
+    "accepted": true,
+    "domains": [
+      "metagenomics"
+    ],
+    "split": "additional-check"
+  },
+  {
+    "full_name": "webpack/webpack",
+    "accepted": false,
+    "domains": [],
+    "split": "development"
+  },
+  {
+    "full_name": "evanw/esbuild",
+    "accepted": false,
+    "domains": [],
+    "split": "development"
+  },
+  {
+    "full_name": "web-infra-dev/rspack",
+    "accepted": false,
+    "domains": [],
+    "split": "development"
+  },
+  {
+    "full_name": "privatenumber/tsx",
+    "accepted": false,
+    "domains": [],
+    "split": "development"
+  },
+  {
+    "full_name": "apache/seatunnel",
+    "accepted": false,
+    "domains": [],
+    "split": "development"
+  },
+  {
+    "full_name": "zai-org/GLM-4",
+    "accepted": false,
+    "domains": [],
+    "split": "development"
+  },
+  {
+    "full_name": "mpoeter/xenium",
+    "accepted": false,
+    "domains": [],
+    "split": "development"
+  },
+  {
+    "full_name": "SimplifyJobs/New-Grad-Positions",
+    "accepted": false,
+    "domains": [],
+    "split": "development"
+  },
+  {
+    "full_name": "Zachacious/MusicTheoryJS",
+    "accepted": false,
+    "domains": [],
+    "split": "development"
+  },
+  {
+    "full_name": "NodeBB/NodeBB",
+    "accepted": false,
+    "domains": [],
+    "split": "development"
+  },
+  {
+    "full_name": "josdejong/mathjs",
+    "accepted": false,
+    "domains": [],
+    "split": "development"
+  },
+  {
+    "full_name": "2U1/Qwen-VL-Series-Finetune",
+    "accepted": false,
+    "domains": [],
+    "split": "development"
+  },
+  {
+    "full_name": "theislab/single-cell-best-practices",
+    "accepted": false,
+    "domains": [],
+    "split": "development"
+  },
+  {
+    "full_name": "scRNA-tools/scRNA-tools",
+    "accepted": false,
+    "domains": [],
+    "split": "development"
+  },
+  {
+    "full_name": "K-Dense-AI/scientific-agent-skills",
+    "accepted": false,
+    "domains": [],
+    "split": "development"
+  },
+  {
+    "full_name": "jaechang-hits/SciAgent-Skills",
+    "accepted": false,
+    "domains": [],
+    "split": "development"
+  },
+  {
+    "full_name": "rootrasel/AI-for-Computational-Life-Sciences",
+    "accepted": false,
+    "domains": [],
+    "split": "development"
+  },
+  {
+    "full_name": "krassowski/multi-omics-state-of-the-field",
+    "accepted": false,
+    "domains": [],
+    "split": "development"
+  },
+  {
+    "full_name": "seandavi/awesome-single-cell",
+    "accepted": false,
+    "domains": [],
+    "split": "development"
+  },
+  {
+    "full_name": "Peldom/papers_for_protein_design_using_DL",
+    "accepted": false,
+    "domains": [],
+    "split": "development"
+  },
+  {
+    "full_name": "QIANJINYDX/Awesome-DNA-Foundation-Models",
+    "accepted": false,
+    "domains": [],
+    "split": "development"
+  },
+  {
+    "full_name": "rhysmc26/Computational-Mathematics-Portfolio",
+    "accepted": false,
+    "domains": [],
+    "split": "development"
+  }
+]

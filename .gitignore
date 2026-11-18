@@ -35,3 +35,11 @@ data/pubmed_cache.json
 docs/reports/
 docs/data/biorxiv_history.json
 docs/data/omics_index.json
+
+# Local skills, disposable HTTP cache, browser artifacts
+.agents/
+.cache/
+.artifacts/
+test-results/
+data/*.tmp
+docs/data/*.tmp

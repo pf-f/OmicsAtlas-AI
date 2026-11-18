@@ -1,4 +1,4 @@
-# sc-st-proAI Toolkit dependencies
+# OmicsAtlas-AI collector dependencies
 # Python 3.12+
 
-requests>=2.31.0
+requests==2.34.2

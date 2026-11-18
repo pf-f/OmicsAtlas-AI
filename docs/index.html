@@ -1,996 +1,360 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>sc-st-proAI Toolkit | Research Tool Leaderboard</title>
-  <link rel="preconnect" href="https://cdn.jsdelivr.net">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23ecfeff'/%3E%3Cpath d='M18 33h28M32 18v28M22 22l20 20M42 22 22 42' stroke='%230891b2' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-  <style>
-    :root {
-      color-scheme: light;
-      --bg: #f6f8fb;
-      --surface: #ffffff;
-      --surface-2: #f1f5f9;
-      --text: #111827;
-      --muted: #64748b;
-      --soft: #94a3b8;
-      --line: #dbe3ee;
-      --line-strong: #c7d2e1;
-      --accent: #0891b2;
-      --accent-2: #2563eb;
-      --success: #65a30d;
-      --warning: #d97706;
-      --danger: #dc2626;
-      --shadow: 0 14px 34px rgba(15, 23, 42, 0.08);
-      --radius: 8px;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background:
-        linear-gradient(rgba(8, 145, 178, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(8, 145, 178, 0.04) 1px, transparent 1px),
-        var(--bg);
-      background-size: 28px 28px;
-      color: var(--text);
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-      letter-spacing: 0;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    button,
-    input,
-    select {
-      font: inherit;
-    }
-
-    .shell {
-      width: min(1240px, calc(100% - 32px));
-      margin: 0 auto;
-    }
-
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      border-bottom: 1px solid rgba(203, 213, 225, 0.72);
-      background: rgba(246, 248, 251, 0.92);
-      backdrop-filter: blur(18px);
-    }
-
-    .topbar-inner {
-      min-height: 68px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 18px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      min-width: 0;
-    }
-
-    .brand-mark {
-      width: 38px;
-      height: 38px;
-      border: 1px solid rgba(8, 145, 178, 0.35);
-      border-radius: 8px;
-      display: grid;
-      place-items: center;
-      color: var(--accent);
-      background: linear-gradient(145deg, #ffffff, #e0f2fe);
-      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.7);
-      flex: 0 0 auto;
-    }
-
-    .brand-title {
-      font-size: 17px;
-      font-weight: 760;
-      line-height: 1.1;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .brand-subtitle {
-      margin-top: 4px;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.2;
-    }
-
-    .status-strip {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: var(--muted);
-      font-size: 13px;
-      white-space: nowrap;
-    }
-
-    .status-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--success);
-      box-shadow: 0 0 0 4px rgba(101, 163, 13, 0.12);
-    }
-
-    main {
-      padding: 34px 0 46px;
-    }
-
-    .overview {
-      display: grid;
-      grid-template-columns: minmax(0, 1.3fr) minmax(320px, 0.7fr);
-      gap: 22px;
-      align-items: stretch;
-      margin-bottom: 24px;
-    }
-
-    .intro {
-      padding: 10px 0 2px;
-    }
-
-    h1 {
-      margin: 0;
-      max-width: 820px;
-      font-size: clamp(32px, 4vw, 56px);
-      line-height: 1;
-      letter-spacing: 0;
-      font-weight: 820;
-    }
-
-    .lead {
-      max-width: 780px;
-      margin: 18px 0 0;
-      color: var(--muted);
-      font-size: 16px;
-      line-height: 1.65;
-    }
-
-    .data-panel {
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: rgba(255, 255, 255, 0.82);
-      box-shadow: var(--shadow);
-      padding: 18px;
-      align-self: start;
-    }
-
-    .data-panel-title {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      margin-bottom: 16px;
-      font-size: 13px;
-      font-weight: 760;
-      color: #334155;
-      text-transform: uppercase;
-    }
-
-    .scoreline {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .metric {
-      min-height: 82px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: linear-gradient(180deg, #ffffff, #f8fafc);
-      padding: 14px;
-    }
-
-    .metric-value {
-      font-size: 27px;
-      line-height: 1;
-      font-weight: 800;
-      color: #0f172a;
-    }
-
-    .metric-label {
-      margin-top: 9px;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.25;
-    }
-
-    .toolbar {
-      display: grid;
-      grid-template-columns: minmax(240px, 1fr) auto auto;
-      gap: 12px;
-      align-items: center;
-      margin: 26px 0 18px;
-    }
-
-    .search {
-      position: relative;
-    }
-
-    .search i {
-      position: absolute;
-      top: 50%;
-      left: 14px;
-      transform: translateY(-50%);
-      color: var(--soft);
-      pointer-events: none;
-    }
-
-    .search input,
-    .select {
-      width: 100%;
-      height: 42px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: rgba(255, 255, 255, 0.92);
-      color: var(--text);
-      outline: none;
-    }
-
-    .search input {
-      padding: 0 14px 0 40px;
-    }
-
-    .select {
-      min-width: 166px;
-      padding: 0 36px 0 12px;
-      cursor: pointer;
-    }
-
-    .search input:focus,
-    .select:focus {
-      border-color: rgba(8, 145, 178, 0.68);
-      box-shadow: 0 0 0 4px rgba(8, 145, 178, 0.1);
-    }
-
-    .segmented {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin: 0 0 14px;
-    }
-
-    .segment,
-    .track-btn,
-    .quick-filter {
-      min-height: 38px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: rgba(255, 255, 255, 0.82);
-      color: #334155;
-      padding: 0 13px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      cursor: pointer;
-      transition: border-color 160ms ease, background 160ms ease, color 160ms ease, transform 160ms ease;
-    }
-
-    .segment:hover,
-    .track-btn:hover,
-    .quick-filter:hover {
-      border-color: var(--line-strong);
-      transform: translateY(-1px);
-    }
-
-    .segment.active,
-    .track-btn.active,
-    .quick-filter.active {
-      border-color: rgba(8, 145, 178, 0.55);
-      background: #ecfeff;
-      color: #0e7490;
-    }
-
-    .segment-count {
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .track-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 16px;
-    }
-
-    .tracks,
-    .quick-filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .list-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 14px;
-      align-items: end;
-      padding: 8px 0 14px;
-      border-bottom: 1px solid var(--line);
-      margin-bottom: 14px;
-    }
-
-    .list-title {
-      font-size: 18px;
-      line-height: 1.2;
-      font-weight: 800;
-    }
-
-    .list-meta {
-      margin-top: 5px;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .result-count {
-      color: var(--muted);
-      font-size: 13px;
-      white-space: nowrap;
-    }
-
-    .project-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-      gap: 14px;
-    }
-
-    .project-card {
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: rgba(255, 255, 255, 0.9);
-      box-shadow: 0 8px 22px rgba(15, 23, 42, 0.055);
-      overflow: hidden;
-      transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
-    }
-
-    .project-card:hover {
-      transform: translateY(-3px);
-      border-color: rgba(8, 145, 178, 0.42);
-      box-shadow: 0 18px 34px rgba(15, 23, 42, 0.09);
-    }
-
-    .project-main {
-      display: grid;
-      grid-template-columns: 74px minmax(0, 1fr);
-      gap: 14px;
-      padding: 16px;
-    }
-
-    .preview {
-      width: 74px;
-      height: 74px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: #eef6fb;
-      display: grid;
-      place-items: center;
-      overflow: hidden;
-      color: #0e7490;
-      font-weight: 800;
-    }
-
-    .preview img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .rank-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      align-items: center;
-      margin-bottom: 7px;
-    }
-
-    .rank {
-      display: inline-flex;
-      align-items: center;
-      height: 24px;
-      padding: 0 9px;
-      border-radius: 999px;
-      background: #e0f2fe;
-      color: #0369a1;
-      font-size: 12px;
-      font-weight: 800;
-    }
-
-    .score {
-      color: #0f172a;
-      font-size: 13px;
-      font-weight: 800;
-    }
-
-    .score span {
-      color: var(--muted);
-      font-weight: 650;
-    }
-
-    .project-name {
-      margin: 0;
-      font-size: 18px;
-      line-height: 1.24;
-      font-weight: 800;
-      overflow-wrap: anywhere;
-    }
-
-    .project-name a:hover {
-      color: var(--accent);
-    }
-
-    .description {
-      min-height: 42px;
-      margin: 9px 0 0;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.5;
-    }
-
-    .badge-row,
-    .meta-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 7px;
-      padding: 0 16px 14px;
-    }
-
-    .tool-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      height: 26px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: #f8fafc;
-      color: #475569;
-      padding: 0 9px;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .tool-badge.docker {
-      border-color: rgba(37, 99, 235, 0.22);
-      color: #1d4ed8;
-      background: #eff6ff;
-    }
-
-    .tool-badge.conda {
-      border-color: rgba(101, 163, 13, 0.26);
-      color: #4d7c0f;
-      background: #f7fee7;
-    }
-
-    .tool-badge.paper {
-      border-color: rgba(217, 119, 6, 0.22);
-      color: #b45309;
-      background: #fffbeb;
-    }
-
-    .meta-row {
-      border-top: 1px solid var(--line);
-      padding-top: 13px;
-      justify-content: space-between;
-    }
-
-    .meta {
-      color: var(--muted);
-      font-size: 12px;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    details.install {
-      border-top: 1px solid var(--line);
-      background: #f8fafc;
-      padding: 0 16px;
-    }
-
-    details.install summary {
-      min-height: 38px;
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      color: #334155;
-      cursor: pointer;
-      font-size: 12px;
-      font-weight: 760;
-      list-style: none;
-    }
-
-    details.install summary::-webkit-details-marker {
-      display: none;
-    }
-
-    .commands {
-      display: grid;
-      gap: 8px;
-      padding: 0 0 14px;
-    }
-
-    code {
-      display: block;
-      overflow-x: auto;
-      border: 1px solid #d7e0ec;
-      border-radius: 7px;
-      background: #0f172a;
-      color: #d1fae5;
-      padding: 9px 10px;
-      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-      font-size: 12px;
-      line-height: 1.45;
-    }
-
-    .empty,
-    .loading {
-      border: 1px dashed var(--line-strong);
-      border-radius: var(--radius);
-      padding: 42px 20px;
-      background: rgba(255, 255, 255, 0.66);
-      color: var(--muted);
-      text-align: center;
-      grid-column: 1 / -1;
-    }
-
-    .loading i {
-      color: var(--accent);
-      font-size: 26px;
-      animation: spin 900ms linear infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    footer {
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.6;
-      padding: 34px 0 0;
-      text-align: center;
-    }
-
-    @media (max-width: 920px) {
-      .overview {
-        grid-template-columns: 1fr;
-      }
-
-      .toolbar {
-        grid-template-columns: 1fr;
-      }
-
-      .select {
-        min-width: 0;
-      }
-    }
-
-    @media (max-width: 640px) {
-      .shell {
-        width: min(100% - 22px, 1240px);
-      }
-
-      .topbar-inner {
-        min-height: 76px;
-        align-items: flex-start;
-        padding: 12px 0;
-        flex-direction: column;
-      }
-
-      .status-strip {
-        white-space: normal;
-      }
-
-      main {
-        padding-top: 24px;
-      }
-
-      .scoreline {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .project-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .project-main {
-        grid-template-columns: 58px minmax(0, 1fr);
-      }
-
-      .preview {
-        width: 58px;
-        height: 58px;
-      }
-
-      .list-head {
-        align-items: start;
-        flex-direction: column;
-      }
-    }
-  </style>
-</head>
-<body>
-  <header class="topbar">
-    <div class="shell topbar-inner">
-      <a class="brand" href="#" aria-label="sc-st-proAI Toolkit home">
-        <span class="brand-mark"><i class="bi bi-nut"></i></span>
-        <span>
-          <span class="brand-title">sc-st-proAI Toolkit</span>
-          <span class="brand-subtitle">Single-cell, spatial-omics, multi-omics and BioAI tools</span>
-        </span>
-      </a>
-      <div class="status-strip">
-        <span class="status-dot" aria-hidden="true"></span>
-        <span id="lastUpdated">Loading data...</span>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Discover, compare and save open research tools for genomics, single-cell analysis, spatial omics, protein AI and more. Evidence-linked. Updated weekly."
+    />
+    <meta name="theme-color" content="#214cc5" />
+    <title>OmicsAtlas-AI — Research tools, in context</title>
+    <link rel="icon" href="assets/atlas.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="assets/style.css" />
+    <script type="module" src="assets/app.js"></script>
+  </head>
+  <body>
+    <a class="skip" href="#results" data-i18n="skip">Skip to tools</a>
+    <header class="site-header">
+      <a class="brand" href="./" aria-label="OmicsAtlas-AI home"
+        ><img src="assets/atlas.svg" width="34" height="34" alt="" /><span
+          >OmicsAtlas<span class="brand-ai">-AI</span></span
+        ></a
+      >
+      <nav aria-label="Primary" class="primary-nav">
+        <button
+          type="button"
+          class="nav-link active"
+          id="explore"
+          data-i18n="explore"
+        >
+          Explore
+        </button>
+        <button type="button" class="nav-link" id="saved" aria-pressed="false">
+          <span data-i18n="saved">Saved</span
+          ><span class="count" id="saved-count">0</span>
+        </button>
+        <button type="button" class="nav-link" id="method" data-i18n="method">
+          How it works
+        </button>
+      </nav>
+      <div class="header-actions">
+        <a
+          class="text-link repository-link"
+          href="https://github.com/pf-f/OmicsAtlas-AI"
+          target="_blank"
+          rel="noopener noreferrer"
+          >GitHub ↗</a
+        ><button
+          type="button"
+          id="language"
+          class="language-button"
+          aria-label="Switch to Chinese"
+        >
+          中文
+        </button>
       </div>
-    </div>
-  </header>
-
-  <main class="shell">
-    <section class="overview" aria-labelledby="pageTitle">
-      <div class="intro">
-        <h1 id="pageTitle">Evidence-ranked biology tool discovery.</h1>
-        <p class="lead">
-          Compare maintained open-source projects across workflow pipelines and focused utilities, with ranking signals from stars, growth, publications, environment support, and repository health.
-        </p>
-      </div>
-
-      <aside class="data-panel" aria-label="Global dataset summary">
-        <div class="data-panel-title">
-          <span>Dataset snapshot</span>
-          <i class="bi bi-activity" aria-hidden="true"></i>
-        </div>
-        <div class="scoreline">
-          <div class="metric">
-            <div class="metric-value" id="totalRepos">-</div>
-            <div class="metric-label">Total tools</div>
-          </div>
-          <div class="metric">
-            <div class="metric-value" id="totalPipelines">-</div>
-            <div class="metric-label">Pipelines</div>
-          </div>
-          <div class="metric">
-            <div class="metric-value" id="totalUtilities">-</div>
-            <div class="metric-label">Utilities</div>
-          </div>
-          <div class="metric">
-            <div class="metric-value" id="paperLinked">-</div>
-            <div class="metric-label">Paper-linked</div>
-          </div>
-        </div>
-      </aside>
-    </section>
-
-    <nav class="segmented" id="categoryTabs" aria-label="Tool categories"></nav>
-
-    <section class="toolbar" aria-label="Leaderboard controls">
-      <label class="search" aria-label="Search projects">
-        <i class="bi bi-search" aria-hidden="true"></i>
-        <input id="searchInput" type="search" placeholder="Search by project, topic, description, install command">
-      </label>
-      <select class="select" id="sortSelect" aria-label="Sort projects">
-        <option value="score">Sort by score</option>
-        <option value="stars">Sort by stars</option>
-        <option value="growth">Sort by weekly growth</option>
-        <option value="recent">Sort by recent update</option>
-      </select>
-      <select class="select" id="healthSelect" aria-label="Filter project signals">
-        <option value="all">All signals</option>
-        <option value="paper">Paper linked</option>
-        <option value="docker">Docker support</option>
-        <option value="conda">Conda support</option>
-      </select>
-    </section>
-
-    <div class="track-row">
-      <div class="tracks" role="tablist" aria-label="Track">
-        <button class="track-btn active" data-track="pipeline" type="button"><i class="bi bi-diagram-3"></i> Pipelines</button>
-        <button class="track-btn" data-track="utility" type="button"><i class="bi bi-tools"></i> Utilities</button>
-      </div>
-      <div class="quick-filters" aria-label="Fast filters">
-        <button class="quick-filter" data-filter="growing" type="button"><i class="bi bi-graph-up-arrow"></i> Growing</button>
-        <button class="quick-filter" data-filter="installable" type="button"><i class="bi bi-terminal"></i> Installable</button>
-      </div>
-    </div>
-
-    <section aria-live="polite">
-      <div class="list-head">
+    </header>
+    <main class="page-shell">
+      <section class="intro" aria-labelledby="page-title">
         <div>
-          <div class="list-title" id="listTitle">Leaderboard</div>
-          <div class="list-meta" id="listMeta">Loading ranked projects</div>
+          <p class="eyebrow" data-i18n="eyebrow">
+            THE OPEN RESEARCH TOOL DIRECTORY
+          </p>
+          <h1 id="page-title" data-i18n="title">
+            Research tools. A clearer view.
+          </h1>
+          <p class="intro-text" data-i18n="intro">
+            Find your next omics tool, understand the evidence, and build your
+            shortlist.
+          </p>
         </div>
-        <div class="result-count" id="resultCount">-</div>
-      </div>
-      <div id="projectGrid" class="project-grid">
-        <div class="loading">
-          <i class="bi bi-arrow-clockwise" aria-hidden="true"></i>
-          <p>Loading ranking data...</p>
+        <div class="update-card">
+          <span class="update-label" data-i18n="directory"
+            >DIRECTORY SNAPSHOT</span
+          >
+          <p id="snapshot-status" role="status">
+            <span class="status-dot loading"></span
+            ><span data-i18n="loading">Loading directory…</span>
+          </p>
+          <p class="update-meta" id="snapshot-meta" data-i18n="weekly">
+            Refreshed weekly · Public GitHub data
+          </p>
         </div>
-      </div>
-    </section>
-
-    <footer>
-      Ranking data is generated from public GitHub metadata and README evidence. Scores are directional signals for discovery, not a substitute for technical review.
-    </footer>
-  </main>
-
-  <script>
-    const categories = [
-      { key: "Single-cell", icon: "bi-circle" },
-      { key: "Spatial-omics", icon: "bi-grid-3x3-gap" },
-      { key: "Multi-omics", icon: "bi-intersect" },
-      { key: "ProteinAI", icon: "bi-cpu" },
-      { key: "AI-Pathology", icon: "bi-heart-pulse" }
-    ];
-
-    const state = {
-      data: null,
-      category: "Single-cell",
-      track: "pipeline",
-      search: "",
-      sort: "score",
-      signal: "all",
-      quick: ""
-    };
-
-    const els = {
-      tabs: document.getElementById("categoryTabs"),
-      grid: document.getElementById("projectGrid"),
-      lastUpdated: document.getElementById("lastUpdated"),
-      totalRepos: document.getElementById("totalRepos"),
-      totalPipelines: document.getElementById("totalPipelines"),
-      totalUtilities: document.getElementById("totalUtilities"),
-      paperLinked: document.getElementById("paperLinked"),
-      listTitle: document.getElementById("listTitle"),
-      listMeta: document.getElementById("listMeta"),
-      resultCount: document.getElementById("resultCount"),
-      searchInput: document.getElementById("searchInput"),
-      sortSelect: document.getElementById("sortSelect"),
-      healthSelect: document.getElementById("healthSelect")
-    };
-
-    const nf = new Intl.NumberFormat("en");
-    const df = new Intl.DateTimeFormat("en", { year: "numeric", month: "short", day: "2-digit" });
-
-    function escapeHTML(value) {
-      return String(value ?? "").replace(/[&<>"']/g, char => ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        "\"": "&quot;",
-        "'": "&#039;"
-      })[char]);
-    }
-
-    function formatDate(value) {
-      if (!value) return "Unknown";
-      const date = new Date(value);
-      return Number.isNaN(date.getTime()) ? "Unknown" : df.format(date);
-    }
-
-    function getProjects() {
-      const cat = state.data?.categories?.[state.category];
-      if (!cat) return [];
-      const key = state.track === "pipeline" ? "top_20_pipelines" : "top_10_utilities";
-      return [...(cat[key] || [])];
-    }
-
-    function searchableText(project) {
-      const commands = (project.install_commands || []).map(item => item.command).join(" ");
-      return [
-        project.full_name,
-        project.short_name,
-        project.description,
-        project.sub_label,
-        (project.topics || []).join(" "),
-        commands
-      ].join(" ").toLowerCase();
-    }
-
-    function applyFilters(projects) {
-      let output = projects;
-      const query = state.search.trim().toLowerCase();
-      if (query) {
-        output = output.filter(project => searchableText(project).includes(query));
-      }
-      if (state.signal === "paper") output = output.filter(project => project.has_paper);
-      if (state.signal === "docker") output = output.filter(project => project.has_docker);
-      if (state.signal === "conda") output = output.filter(project => project.has_conda);
-      if (state.quick === "growing") output = output.filter(project => Number(project.weekly_growth || 0) > 0);
-      if (state.quick === "installable") output = output.filter(project => (project.install_commands || []).length > 0);
-
-      output.sort((a, b) => {
-        if (state.sort === "stars") return Number(b.stars || 0) - Number(a.stars || 0);
-        if (state.sort === "growth") return Number(b.weekly_growth || 0) - Number(a.weekly_growth || 0);
-        if (state.sort === "recent") return new Date(b.pushed_at || 0) - new Date(a.pushed_at || 0);
-        return Number(b.score || b.score_total || 0) - Number(a.score || a.score_total || 0);
-      });
-      return output;
-    }
-
-    function updateGlobalStats() {
-      const summary = state.data?.summary || {};
-      els.totalRepos.textContent = nf.format(state.data?.total_repositories || 0);
-      els.totalPipelines.textContent = nf.format(summary.total_pipelines || 0);
-      els.totalUtilities.textContent = nf.format(summary.total_utilities || 0);
-      els.paperLinked.textContent = nf.format(summary.paper_linked || 0);
-      els.lastUpdated.textContent = `Last updated ${formatDate(state.data?.generated_at)} | v${escapeHTML(state.data?.version || "-")}`;
-    }
-
-    function renderTabs() {
-      els.tabs.innerHTML = categories.map(category => {
-        const data = state.data?.categories?.[category.key] || {};
-        const active = category.key === state.category ? "active" : "";
-        return `
-          <button class="segment ${active}" data-category="${escapeHTML(category.key)}" type="button">
-            <i class="bi ${category.icon}" aria-hidden="true"></i>
-            <span>${escapeHTML(category.key)}</span>
-            <span class="segment-count">${nf.format(data.total_count || 0)}</span>
-          </button>
-        `;
-      }).join("");
-    }
-
-    function projectInitials(project) {
-      const source = project.short_name || project.full_name || project.name || "?";
-      return source.replace(/[^a-z0-9]/gi, "").slice(0, 2).toUpperCase() || "?";
-    }
-
-    function renderPreview(project) {
-      const src = project.preview_images?.[0];
-      if (!src) return `<span>${escapeHTML(projectInitials(project))}</span>`;
-      return `<img src="${escapeHTML(src)}" alt="${escapeHTML(project.short_name || project.full_name)} preview" loading="lazy" referrerpolicy="no-referrer" onerror="this.replaceWith(document.createTextNode('${escapeHTML(projectInitials(project))}'))">`;
-    }
-
-    function renderBadges(project) {
-      const badges = [];
-      if (project.has_docker) badges.push(`<span class="tool-badge docker"><i class="bi bi-box-seam"></i> Docker</span>`);
-      if (project.has_conda) badges.push(`<span class="tool-badge conda"><i class="bi bi-box"></i> Conda</span>`);
-      if (project.has_paper) badges.push(`<span class="tool-badge paper"><i class="bi bi-journal-text"></i> Paper</span>`);
-      if (project.sub_label) badges.push(`<span class="tool-badge"><i class="bi bi-tag"></i> ${escapeHTML(project.sub_label)}</span>`);
-      if (project.pubmed_citations) badges.push(`<span class="tool-badge"><i class="bi bi-quote"></i> ${nf.format(project.pubmed_citations)} cites</span>`);
-      return badges.join("");
-    }
-
-    function renderInstall(project) {
-      const commands = project.install_commands || [];
-      if (!commands.length) return "";
-      return `
-        <details class="install">
-          <summary><i class="bi bi-terminal"></i> Install commands</summary>
-          <div class="commands">
-            ${commands.slice(0, 3).map(item => `<code>${escapeHTML(item.command)}</code>`).join("")}
+      </section>
+      <div class="workspace">
+        <aside class="sidebar" aria-label="Research domains">
+          <div class="sidebar-heading">
+            <h2 data-i18n="domains">Research domains</h2>
+            <span class="small-label">11</span>
           </div>
-        </details>
-      `;
-    }
-
-    function renderProjects() {
-      if (!state.data) return;
-      const allProjects = getProjects();
-      const projects = applyFilters(allProjects);
-      const cat = state.data.categories[state.category] || {};
-      const trackLabel = state.track === "pipeline" ? "Pipelines" : "Utilities";
-
-      els.listTitle.textContent = `${state.category} ${trackLabel}`;
-      els.listMeta.textContent = `${nf.format(cat.pipeline_count || 0)} pipelines and ${nf.format(cat.utility_count || 0)} utilities in this category`;
-      els.resultCount.textContent = `${nf.format(projects.length)} of ${nf.format(allProjects.length)} shown`;
-
-      if (!projects.length) {
-        els.grid.innerHTML = `<div class="empty">No projects match the current filters.</div>`;
-        return;
-      }
-
-      els.grid.innerHTML = projects.map((project, index) => {
-        const score = Number(project.score || project.score_total || 0);
-        const shortName = project.short_name || project.full_name || project.name || "Unnamed project";
-        return `
-          <article class="project-card">
-            <div class="project-main">
-              <div class="preview">${renderPreview(project)}</div>
-              <div>
-                <div class="rank-row">
-                  <span class="rank">#${String(index + 1).padStart(2, "0")}</span>
-                  <span class="score"><span>Score</span> ${score.toFixed(1)}</span>
-                </div>
-                <h2 class="project-name">
-                  <a href="${escapeHTML(project.url || "#")}" target="_blank" rel="noreferrer">${escapeHTML(shortName)}</a>
-                </h2>
-                <p class="description">${escapeHTML(project.description || "No description provided.")}</p>
+          <div id="domain-list" class="domain-list"></div>
+          <div class="sidebar-note">
+            <span class="note-symbol">↗</span>
+            <h3 data-i18n="evidenceTitle">Know why it belongs.</h3>
+            <p data-i18n="evidenceNote">
+              Every listed tool has linked evidence of its research purpose and
+              software use.
+            </p>
+            <button
+              type="button"
+              class="inline-link"
+              id="method-secondary"
+              data-i18n="readMethod"
+            >
+              Read our method →
+            </button>
+          </div>
+          <div class="saved-actions" id="saved-actions" hidden>
+            <button
+              type="button"
+              id="export-saved"
+              class="subtle-button"
+              data-i18n="exportSaved"
+            >
+              Export saved list</button
+            ><button
+              type="button"
+              id="import-saved"
+              class="subtle-button"
+              data-i18n="importSaved"
+            >
+              Import saved list</button
+            ><input
+              type="file"
+              id="import-file"
+              accept="application/json,.json"
+              hidden
+            />
+          </div>
+        </aside>
+        <section class="directory" aria-label="Tool directory">
+          <form id="search-form" role="search" class="search-bar">
+            <span class="search-symbol" aria-hidden="true">⌕</span
+            ><label class="sr-only" for="search" data-i18n="searchLabel"
+              >Search all tools</label
+            ><input
+              type="search"
+              id="search"
+              autocomplete="off"
+              placeholder="Search tools, tasks, or research areas…"
+              data-placeholder="searchPlaceholder"
+            /><kbd aria-hidden="true">/</kbd
+            ><button type="submit" class="primary-button" data-i18n="search">
+              Search
+            </button>
+          </form>
+          <div class="view-bar" aria-label="Directory views" id="views">
+            <button
+              type="button"
+              data-view="all"
+              aria-pressed="true"
+              class="view active"
+              data-i18n="allTools"
+            >
+              All tools</button
+            ><button
+              type="button"
+              data-view="popular"
+              aria-pressed="false"
+              class="view"
+              data-i18n="popular"
+            >
+              Popular</button
+            ><button
+              type="button"
+              data-view="new"
+              aria-pressed="false"
+              class="view"
+              data-i18n="new"
+            >
+              New discoveries</button
+            ><button
+              type="button"
+              data-view="trending"
+              aria-pressed="false"
+              class="view"
+              data-i18n="trending"
+            >
+              Trending
+            </button>
+          </div>
+          <div class="filters">
+            <label
+              ><span data-i18n="type">Tool type</span
+              ><select id="type"></select></label
+            ><label
+              ><span data-i18n="task">Research task</span
+              ><select id="task"></select
+            ></label>
+            <details class="more-filters" id="more-filters">
+              <summary data-i18n="more">More filters</summary>
+              <div class="filter-popover">
+                <label
+                  ><span data-i18n="codeLanguage">Language</span
+                  ><select id="code-language"></select></label
+                ><label
+                  ><span data-i18n="license">License</span
+                  ><select id="license"></select></label
+                ><label
+                  ><span data-i18n="environment">Environment</span
+                  ><select id="environment"></select></label
+                ><label class="check-label"
+                  ><input type="checkbox" id="include-archived" /><span
+                    data-i18n="includeArchived"
+                    >Include archived & unavailable</span
+                  ></label
+                >
               </div>
+            </details>
+            <button
+              type="button"
+              id="clear"
+              class="inline-link clear-button"
+              data-i18n="clear"
+            >
+              Clear filters
+            </button>
+          </div>
+          <div class="results-toolbar">
+            <div>
+              <h2 id="result-heading" data-i18n="allTools">All tools</h2>
+              <p
+                id="result-count"
+                role="status"
+                aria-live="polite"
+                data-i18n="loading"
+              >
+                Loading directory…
+              </p>
             </div>
-            <div class="badge-row">${renderBadges(project) || `<span class="tool-badge">No extra signals</span>`}</div>
-            <div class="meta-row">
-              <span class="meta"><i class="bi bi-star"></i> ${nf.format(project.stars || 0)}</span>
-              <span class="meta"><i class="bi bi-diagram-2"></i> ${nf.format(project.forks || 0)}</span>
-              <span class="meta"><i class="bi bi-graph-up-arrow"></i> +${nf.format(project.weekly_growth || 0)}</span>
-              <span class="meta"><i class="bi bi-clock-history"></i> ${formatDate(project.pushed_at)}</span>
+            <div class="result-actions">
+              <label class="sort-label"
+                ><span data-i18n="sort">Sort</span
+                ><select id="sort"></select
+              ></label>
+              <details class="export-menu">
+                <summary class="subtle-button" data-i18n="export">
+                  Export ↓
+                </summary>
+                <div class="export-options">
+                  <button type="button" id="export-csv">CSV</button
+                  ><button type="button" id="export-json">JSON</button>
+                </div>
+              </details>
             </div>
-            ${renderInstall(project)}
-          </article>
-        `;
-      }).join("");
-    }
-
-    function render() {
-      updateGlobalStats();
-      renderTabs();
-      renderProjects();
-    }
-
-    els.tabs.addEventListener("click", event => {
-      const button = event.target.closest("[data-category]");
-      if (!button) return;
-      state.category = button.dataset.category;
-      render();
-    });
-
-    document.querySelectorAll(".track-btn").forEach(button => {
-      button.addEventListener("click", () => {
-        state.track = button.dataset.track;
-        document.querySelectorAll(".track-btn").forEach(item => item.classList.toggle("active", item === button));
-        renderProjects();
-      });
-    });
-
-    document.querySelectorAll(".quick-filter").forEach(button => {
-      button.addEventListener("click", () => {
-        const next = state.quick === button.dataset.filter ? "" : button.dataset.filter;
-        state.quick = next;
-        document.querySelectorAll(".quick-filter").forEach(item => item.classList.toggle("active", item.dataset.filter === next));
-        renderProjects();
-      });
-    });
-
-    els.searchInput.addEventListener("input", event => {
-      state.search = event.target.value;
-      renderProjects();
-    });
-
-    els.sortSelect.addEventListener("change", event => {
-      state.sort = event.target.value;
-      renderProjects();
-    });
-
-    els.healthSelect.addEventListener("change", event => {
-      state.signal = event.target.value;
-      renderProjects();
-    });
-
-    async function loadData() {
-      try {
-        const response = await fetch("data/ranking_report.json", { cache: "no-cache" });
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        state.data = await response.json();
-        render();
-      } catch (error) {
-        console.error("Failed to load ranking data:", error);
-        els.lastUpdated.textContent = "Data unavailable";
-        els.grid.innerHTML = `<div class="empty">Failed to load ranking data. Check docs/data/ranking_report.json.</div>`;
-      }
-    }
-
-    loadData();
-  </script>
-</body>
+          </div>
+          <p class="context-note" id="context-note" hidden></p>
+          <div id="results" class="results" tabindex="-1" aria-busy="true">
+            <div class="empty">
+              <div class="loader"></div>
+              <h3 data-i18n="loading">Loading directory…</h3>
+            </div>
+          </div>
+          <div class="pagination" id="pagination"></div>
+        </section>
+      </div>
+      <footer class="site-footer">
+        <p>
+          <strong>OmicsAtlas-AI</strong
+          ><span data-i18n="footer"
+            >A guide to research software, built on public evidence.</span
+          >
+        </p>
+        <p>
+          <a href="data/catalog.json" download data-i18n="openData"
+            >Open data ↗</a
+          ><a href="https://bio.tools" target="_blank" rel="noopener noreferrer"
+            >bio.tools · CC BY 4.0</a
+          ><span data-i18n="localNote">Saved tools stay in this browser.</span>
+        </p>
+      </footer>
+    </main>
+    <div id="compare-bar" class="compare-bar" hidden>
+      <span id="compare-count"></span>
+      <div id="compare-names"></div>
+      <button
+        type="button"
+        id="compare-open"
+        class="primary-button"
+        data-i18n="compareNow"
+      >
+        Compare tools →</button
+      ><button
+        type="button"
+        id="compare-clear"
+        class="subtle-button"
+        data-i18n="clear"
+      >
+        Clear
+      </button>
+    </div>
+    <dialog
+      id="detail-dialog"
+      class="detail-dialog"
+      aria-labelledby="detail-title"
+    >
+      <div class="dialog-top">
+        <span class="eyebrow" data-i18n="toolDetails">TOOL DETAILS</span
+        ><button
+          type="button"
+          class="icon-button close-dialog"
+          aria-label="Close"
+          data-close="detail-dialog"
+        >
+          ×
+        </button>
+      </div>
+      <div id="detail-content"></div>
+    </dialog>
+    <dialog
+      id="compare-dialog"
+      class="compare-dialog"
+      aria-labelledby="compare-title"
+    >
+      <div class="dialog-top">
+        <div>
+          <p class="eyebrow" data-i18n="shortlist">YOUR RESEARCH SHORTLIST</p>
+          <h2 id="compare-title" data-i18n="compareTitle">
+            A closer look, side by side.
+          </h2>
+        </div>
+        <button
+          type="button"
+          class="icon-button close-dialog"
+          aria-label="Close"
+          data-close="compare-dialog"
+        >
+          ×
+        </button>
+      </div>
+      <div id="compare-content"></div>
+    </dialog>
+    <dialog
+      id="method-dialog"
+      class="method-dialog"
+      aria-labelledby="method-title"
+    >
+      <div class="dialog-top">
+        <span class="eyebrow">OMICSATLAS-AI</span
+        ><button
+          type="button"
+          class="icon-button close-dialog"
+          aria-label="Close"
+          data-close="method-dialog"
+        >
+          ×
+        </button>
+      </div>
+      <h2 id="method-title" data-i18n="method">How it works</h2>
+      <div id="method-content"></div>
+    </dialog>
+    <div id="toast" role="status" aria-live="polite" class="toast" hidden></div>
+    <noscript
+      ><p class="noscript">
+        JavaScript is needed to search this directory. You can also
+        <a href="data/catalog.json">download the full JSON catalog</a>.
+      </p></noscript
+    >
+  </body>
 </html>

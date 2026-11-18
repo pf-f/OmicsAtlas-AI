@@ -1,0 +1,522 @@
+{
+  "version": "1.4",
+  "domains": [
+    {
+      "id": "single-cell",
+      "en": "Single-cell",
+      "zh": "单细胞",
+      "aliases": [
+        "单细胞",
+        "scrna",
+        "scatac"
+      ],
+      "topics": [
+        "single-cell",
+        "single-cell-rna-seq",
+        "scrna-seq",
+        "single-cell-analysis",
+        "scrnaseq",
+        "scverse"
+      ],
+      "phrases": [
+        "single cell",
+        "single-cell",
+        "scrna-seq",
+        "scrna seq",
+        "scatac-seq",
+        "single-nucleus",
+        "single nucleus",
+        "perturb-seq"
+      ]
+    },
+    {
+      "id": "spatial-omics",
+      "en": "Spatial omics",
+      "zh": "空间组学",
+      "aliases": [
+        "空间组学",
+        "空间转录组",
+        "空间蛋白组"
+      ],
+      "topics": [
+        "spatial-omics",
+        "spatial-transcriptomics",
+        "spatial-proteomics"
+      ],
+      "phrases": [
+        "spatial transcriptomics",
+        "spatial omics",
+        "spatial proteomics",
+        "spatial gene expression",
+        "image-based transcriptomics",
+        "spatially resolved transcriptomics",
+        "spatial molecular profiling"
+      ]
+    },
+    {
+      "id": "multi-omics",
+      "en": "Multi-omics",
+      "zh": "多组学整合",
+      "aliases": [
+        "多组学",
+        "组学整合",
+        "multiomics"
+      ],
+      "topics": [
+        "multi-omics",
+        "multiomics",
+        "omics-integration",
+        "multi-omic",
+        "multimodal-omics"
+      ],
+      "phrases": [
+        "multi-omics",
+        "multiomics",
+        "multi omics",
+        "multi-omic",
+        "omics integration",
+        "cross-omics",
+        "integrative omics",
+        "multimodal omics",
+        "multi-modal omics"
+      ]
+    },
+    {
+      "id": "protein-ai",
+      "en": "Protein AI",
+      "zh": "蛋白质 AI",
+      "aliases": [
+        "蛋白质",
+        "蛋白设计",
+        "蛋白结构",
+        "alphafold"
+      ],
+      "topics": [
+        "protein-design",
+        "protein-folding",
+        "protein-language-model",
+        "protein-structure-prediction"
+      ],
+      "phrases": [
+        "protein structure prediction",
+        "protein language model",
+        "protein design",
+        "protein folding",
+        "protein sequence model",
+        "protein generation",
+        "protein structure modeling",
+        "protein structure modelling",
+        "protein foundation model",
+        "biomolecular structure prediction",
+        "protein complex prediction",
+        "biomolecular modeling",
+        "biomolecular modelling",
+        "protein sequences and structures",
+        "protein structures",
+        "protein structure",
+        "biomolecular interaction",
+        "biomolecular foundation model"
+      ]
+    },
+    {
+      "id": "ai-pathology",
+      "en": "AI pathology",
+      "zh": "AI 病理",
+      "aliases": [
+        "病理",
+        "数字病理",
+        "组织病理",
+        "切片"
+      ],
+      "topics": [
+        "computational-pathology",
+        "digital-pathology",
+        "histopathology",
+        "whole-slide-imaging"
+      ],
+      "phrases": [
+        "computational pathology",
+        "digital pathology",
+        "histopathology",
+        "histopathological",
+        "whole-slide",
+        "whole slide",
+        "pathology foundation model",
+        "pathology image",
+        "pathology images"
+      ]
+    },
+    {
+      "id": "genomics",
+      "en": "Genomics",
+      "zh": "基因组",
+      "aliases": [
+        "基因组",
+        "变异检测",
+        "基因组装"
+      ],
+      "topics": [
+        "genomics",
+        "genome-assembly",
+        "variant-calling",
+        "pangenomics",
+        "pangenome"
+      ],
+      "phrases": [
+        "genomics",
+        "genome assembly",
+        "genomic analysis",
+        "genome analysis",
+        "genome alignment",
+        "genomic variants",
+        "variant calling",
+        "variant discovery",
+        "pangenome",
+        "pangenomics",
+        "genome sequencing",
+        "genotyping",
+        "genomic data",
+        "dna sequencing",
+        "dna-seq",
+        "next-generation sequencing",
+        "high-throughput sequencing",
+        "sequence reads",
+        "short reads",
+        "read aligner"
+      ]
+    },
+    {
+      "id": "transcriptomics",
+      "en": "Transcriptomics",
+      "zh": "转录组",
+      "aliases": [
+        "转录组",
+        "差异表达",
+        "rna-seq",
+        "rnaseq"
+      ],
+      "topics": [
+        "transcriptomics",
+        "rna-seq",
+        "rnaseq",
+        "differential-expression",
+        "transcriptome"
+      ],
+      "phrases": [
+        "transcriptomics",
+        "transcriptome",
+        "rna-seq",
+        "rna seq",
+        "rnaseq",
+        "gene expression analysis",
+        "differential gene expression",
+        "transcript quantification",
+        "rna sequencing"
+      ]
+    },
+    {
+      "id": "epigenomics",
+      "en": "Epigenomics",
+      "zh": "表观组",
+      "aliases": [
+        "表观组",
+        "表观遗传",
+        "甲基化",
+        "染色质",
+        "atac",
+        "chip"
+      ],
+      "topics": [
+        "epigenomics",
+        "epigenetics",
+        "atac-seq",
+        "chip-seq",
+        "dna-methylation",
+        "chromatin"
+      ],
+      "phrases": [
+        "epigenomics",
+        "epigenetics",
+        "epigenomic",
+        "chromatin accessibility",
+        "chromatin interaction",
+        "chromatin analysis",
+        "dna methylation",
+        "atac-seq",
+        "atac seq",
+        "chip-seq",
+        "chip seq",
+        "hi-c data",
+        "hi-c analysis"
+      ]
+    },
+    {
+      "id": "proteomics",
+      "en": "Proteomics",
+      "zh": "蛋白组",
+      "aliases": [
+        "蛋白组",
+        "质谱",
+        "肽段"
+      ],
+      "topics": [
+        "proteomics",
+        "peptide-identification",
+        "protein-quantification"
+      ],
+      "phrases": [
+        "proteomics",
+        "proteomic",
+        "peptide identification",
+        "protein quantification",
+        "peptide sequencing",
+        "dia proteomics"
+      ]
+    },
+    {
+      "id": "metabolomics",
+      "en": "Metabolomics",
+      "zh": "代谢组",
+      "aliases": [
+        "代谢组",
+        "脂质组",
+        "代谢物"
+      ],
+      "topics": [
+        "metabolomics",
+        "lipidomics",
+        "metabolomic-analysis"
+      ],
+      "phrases": [
+        "metabolomics",
+        "metabolomic",
+        "lipidomics",
+        "lipidomic",
+        "metabolite identification",
+        "metabolite annotation",
+        "metabolic profiling"
+      ]
+    },
+    {
+      "id": "metagenomics",
+      "en": "Metagenomics",
+      "zh": "宏基因组",
+      "aliases": [
+        "宏基因组",
+        "微生物组",
+        "菌群",
+        "扩增子"
+      ],
+      "topics": [
+        "metagenomics",
+        "microbiome",
+        "metagenomic",
+        "amplicon-sequencing"
+      ],
+      "phrases": [
+        "metagenomics",
+        "metagenomic",
+        "microbiome",
+        "microbiota",
+        "amplicon sequencing",
+        "16s rrna",
+        "microbial community",
+        "microbial communities",
+        "metagenomic sequences",
+        "taxonomic sequence classification"
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "quality-control",
+      "en": "Quality control",
+      "zh": "质量控制",
+      "phrases": [
+        "quality control",
+        "quality assessment",
+        "doublet detection",
+        "ambient rna"
+      ]
+    },
+    {
+      "id": "alignment",
+      "en": "Alignment",
+      "zh": "比对",
+      "phrases": [
+        "read alignment",
+        "sequence alignment",
+        "read mapping",
+        "genome alignment",
+        "aligner"
+      ]
+    },
+    {
+      "id": "assembly",
+      "en": "Assembly",
+      "zh": "组装",
+      "phrases": [
+        "genome assembly",
+        "de novo assembly",
+        "genome assembler"
+      ]
+    },
+    {
+      "id": "quantification",
+      "en": "Quantification",
+      "zh": "定量",
+      "phrases": [
+        "quantification",
+        "quantifying",
+        "quantitative analysis"
+      ]
+    },
+    {
+      "id": "variant-calling",
+      "en": "Variant analysis",
+      "zh": "变异分析",
+      "phrases": [
+        "variant calling",
+        "variant discovery",
+        "variant detection",
+        "genotyping"
+      ]
+    },
+    {
+      "id": "differential-analysis",
+      "en": "Differential analysis",
+      "zh": "差异分析",
+      "phrases": [
+        "differential expression",
+        "differential gene expression",
+        "differential abundance",
+        "differential analysis"
+      ]
+    },
+    {
+      "id": "cell-annotation",
+      "en": "Cell annotation",
+      "zh": "细胞注释",
+      "phrases": [
+        "cell annotation",
+        "cell type annotation",
+        "cell-type annotation",
+        "cell typing",
+        "cell identification"
+      ]
+    },
+    {
+      "id": "trajectory",
+      "en": "Trajectory & perturbation",
+      "zh": "轨迹与扰动",
+      "phrases": [
+        "trajectory inference",
+        "rna velocity",
+        "perturbation analysis",
+        "pseudotime"
+      ]
+    },
+    {
+      "id": "integration",
+      "en": "Integration",
+      "zh": "数据整合",
+      "phrases": [
+        "data integration",
+        "omics integration",
+        "batch correction",
+        "integrating",
+        "multi-omics integration"
+      ]
+    },
+    {
+      "id": "spatial-analysis",
+      "en": "Spatial analysis",
+      "zh": "空间分析",
+      "phrases": [
+        "spatial analysis",
+        "spatial transcriptomics",
+        "spatial deconvolution"
+      ]
+    },
+    {
+      "id": "regulation",
+      "en": "Regulation & chromatin",
+      "zh": "调控与染色质",
+      "phrases": [
+        "regulatory network",
+        "chromatin",
+        "transcription factor",
+        "dna methylation"
+      ]
+    },
+    {
+      "id": "structure-design",
+      "en": "Structure & design",
+      "zh": "结构与设计",
+      "phrases": [
+        "structure prediction",
+        "protein design",
+        "protein folding",
+        "binder design",
+        "biomolecular modeling",
+        "biomolecular modelling"
+      ]
+    },
+    {
+      "id": "image-analysis",
+      "en": "Image analysis",
+      "zh": "图像分析",
+      "phrases": [
+        "image analysis",
+        "segmentation",
+        "whole-slide",
+        "whole slide",
+        "histopathology"
+      ]
+    },
+    {
+      "id": "visualization",
+      "en": "Visualization",
+      "zh": "可视化",
+      "phrases": [
+        "visualization",
+        "visualisation",
+        "interactive exploration",
+        "data exploration"
+      ]
+    },
+    {
+      "id": "classification",
+      "en": "Taxonomic profiling",
+      "zh": "物种与功能分析",
+      "phrases": [
+        "taxonomic classification",
+        "taxonomic profiling",
+        "functional profiling",
+        "microbial profiling"
+      ]
+    }
+  ],
+  "tool_types": [
+    {
+      "id": "pipeline",
+      "en": "Pipeline",
+      "zh": "分析流程"
+    },
+    {
+      "id": "library",
+      "en": "Library",
+      "zh": "软件包"
+    },
+    {
+      "id": "model",
+      "en": "Model",
+      "zh": "模型"
+    },
+    {
+      "id": "application",
+      "en": "Application / CLI",
+      "zh": "应用 / 命令行"
+    }
+  ]
+}
